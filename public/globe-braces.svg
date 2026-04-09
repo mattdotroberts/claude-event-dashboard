@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <!-- Left brace - thicker, more organic -->
+  <path d="M160 105 Q175 105, 175 140 Q178 260, 135 285 Q125 292, 125 300 Q125 308, 135 315 Q178 340, 175 460 Q175 495, 160 495"
+        stroke="#1a1a1a" stroke-width="18" stroke-linecap="round" fill="none"/>
+
+  <!-- Right brace - thicker, more organic -->
+  <path d="M640 105 Q625 105, 625 140 Q622 260, 665 285 Q675 292, 675 300 Q675 308, 665 315 Q622 340, 625 460 Q625 495, 640 495"
+        stroke="#1a1a1a" stroke-width="18" stroke-linecap="round" fill="none"/>
+
+  <!-- Globe circle -->
+  <circle cx="400" cy="300" r="160" fill="white" stroke="#1a1a1a" stroke-width="14"/>
+
+  <!-- Vertical center line -->
+  <line x1="400" y1="140" x2="400" y2="460" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Outer meridian curves (wider ellipse) -->
+  <ellipse cx="400" cy="300" rx="100" ry="160" fill="none" stroke="#1a1a1a" stroke-width="11"/>
+
+  <!-- Inner meridian curves (narrower ellipse) - slightly off-center for hand-drawn feel -->
+  <ellipse cx="402" cy="300" rx="48" ry="160" fill="none" stroke="#1a1a1a" stroke-width="10"/>
+
+  <!-- Horizontal lines (latitude) -->
+  <!-- Top latitude -->
+  <path d="M265 215 Q400 185, 535 215" stroke="#1a1a1a" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <!-- Equator -->
+  <path d="M240 300 Q400 295, 560 300" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- Bottom latitude -->
+  <path d="M265 385 Q400 415, 535 385" stroke="#1a1a1a" stroke-width="11" stroke-linecap="round" fill="none"/>
+</svg>

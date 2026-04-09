@@ -1,0 +1,137 @@
+.admin {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.admin__content {
+  flex: 1;
+  padding: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.admin__section {
+  margin-bottom: 32px;
+}
+
+.admin__section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.admin__dot--pending { background: #f59e0b; }
+.admin__dot--approved { background: var(--accent-green); }
+
+.admin__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 12px;
+}
+
+.admin__card--pending {
+  border-color: #f59e0b40;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.admin__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.admin__card-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin__card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.admin__card-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin__btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin__btn--approve {
+  background: var(--accent-green);
+  color: #1a1a1a;
+}
+.admin__btn--approve:hover {
+  background: #6ab36e;
+}
+
+.admin__btn--reject {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.admin__btn--reject:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.admin__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.admin__empty-icon {
+  font-size: 32px;
+}

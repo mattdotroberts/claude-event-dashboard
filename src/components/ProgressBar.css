@@ -1,0 +1,15 @@
+.progress-bar {
+  display: flex;
+  gap: 4px;
+  padding: 16px 20px 8px;
+}
+.progress-bar__segment {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-elevated);
+  transition: background 0.3s ease;
+}
+.progress-bar__segment--filled {
+  background: var(--claude-orange);
+}

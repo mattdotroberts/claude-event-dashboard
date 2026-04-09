@@ -1,0 +1,78 @@
+/* Size tokens */
+.claude-char--small { --char-body-w: 40px; --char-body-h: 32px; --char-ear-w: 8px; --char-ear-h: 10px; --char-leg-w: 6px; --char-leg-h: 8px; --char-eye-size: 4px; --char-eye-gap: 14px; --char-eye-top: 10px; --char-radius: 8px; }
+.claude-char--medium { --char-body-w: 70px; --char-body-h: 56px; --char-ear-w: 14px; --char-ear-h: 16px; --char-leg-w: 10px; --char-leg-h: 14px; --char-eye-size: 7px; --char-eye-gap: 24px; --char-eye-top: 18px; --char-radius: 14px; }
+.claude-char--large { --char-body-w: 110px; --char-body-h: 88px; --char-ear-w: 20px; --char-ear-h: 24px; --char-leg-w: 16px; --char-leg-h: 20px; --char-eye-size: 10px; --char-eye-gap: 38px; --char-eye-top: 28px; --char-radius: 20px; }
+
+.claude-char {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Floating animation */
+.claude-char--floating {
+  animation: claude-float 3s ease-in-out infinite;
+}
+@keyframes claude-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Body */
+.claude-char__body {
+  width: var(--char-body-w);
+  height: var(--char-body-h);
+  background: var(--claude-orange);
+  border-radius: var(--char-radius);
+  position: relative;
+}
+
+/* Eyes via pseudo + box-shadow */
+.claude-char__eyes {
+  position: absolute;
+  top: var(--char-eye-top);
+  left: 50%;
+  transform: translateX(calc(-1 * var(--char-eye-gap) / 2 - var(--char-eye-size) / 2));
+  width: var(--char-eye-size);
+  height: var(--char-eye-size);
+  background: #1a1a1a;
+  border-radius: 2px;
+  box-shadow: var(--char-eye-gap) 0 0 0 #1a1a1a;
+}
+
+/* Ears */
+.claude-char__ear {
+  position: absolute;
+  top: calc(-1 * var(--char-ear-h) + 4px);
+  width: var(--char-ear-w);
+  height: var(--char-ear-h);
+  background: var(--claude-orange);
+  border-radius: 3px 3px 0 0;
+}
+.claude-char__ear--left { left: calc(50% - var(--char-body-w) / 2 + 4px); }
+.claude-char__ear--right { right: calc(50% - var(--char-body-w) / 2 + 4px); }
+
+/* Legs */
+.claude-char__legs {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+.claude-char__leg {
+  width: var(--char-leg-w);
+  height: var(--char-leg-h);
+  background: var(--claude-orange);
+  border-radius: 0 0 3px 3px;
+}
+
+/* Walking animation */
+.claude-char--walking .claude-char__leg--1 { animation: leg-walk 0.4s ease-in-out infinite; }
+.claude-char--walking .claude-char__leg--2 { animation: leg-walk 0.4s ease-in-out infinite 0.1s; }
+.claude-char--walking .claude-char__leg--3 { animation: leg-walk 0.4s ease-in-out infinite 0.2s; }
+.claude-char--walking .claude-char__leg--4 { animation: leg-walk 0.4s ease-in-out infinite 0.3s; }
+
+@keyframes leg-walk {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}

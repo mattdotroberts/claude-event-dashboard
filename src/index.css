@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Lora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #1a1a1a;
+  --bg-surface: #242424;
+  --bg-elevated: #2e2e2e;
+  --claude-orange: #E07A5F;
+  --claude-peach: #F2A98C;
+  --text-primary: #e8e0d8;
+  --text-secondary: #9a918a;
+  --text-muted: #6b6460;
+  --accent-green: #7BC47F;
+  --accent-blue: #6BA3D6;
+  --accent-purple: #B08DD6;
+  --border: #3a3632;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'DM Sans', 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+input, textarea, button {
+  font-family: inherit;
+}

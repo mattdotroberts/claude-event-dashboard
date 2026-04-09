@@ -1,0 +1,65 @@
+/* Crawling Claude — appears on any edge */
+.crawling-claude {
+  position: fixed;
+  z-index: 25;
+  pointer-events: none;
+}
+
+/* ── Bottom edge: crawl left→right ── */
+.crawling-claude--bottom {
+  bottom: 2px;
+  animation: crawlHorizontal var(--dur, 20s) linear forwards;
+}
+.crawling-claude--bottom.crawling-claude--reverse {
+  animation-name: crawlHorizontalReverse;
+}
+
+/* ── Top edge: crawl left→right, upside down ── */
+.crawling-claude--top {
+  top: 2px;
+  transform: rotate(180deg);
+  animation: crawlHorizontal var(--dur, 20s) linear forwards;
+}
+.crawling-claude--top.crawling-claude--reverse {
+  animation-name: crawlHorizontalReverse;
+}
+
+/* ── Left edge: crawl bottom→top, rotated 90° CW ── */
+.crawling-claude--left {
+  left: 2px;
+  transform: rotate(90deg);
+  animation: crawlVertical var(--dur, 20s) linear forwards;
+}
+.crawling-claude--left.crawling-claude--reverse {
+  animation-name: crawlVerticalReverse;
+}
+
+/* ── Right edge: crawl bottom→top, rotated -90° ── */
+.crawling-claude--right {
+  right: 2px;
+  transform: rotate(-90deg);
+  animation: crawlVertical var(--dur, 20s) linear forwards;
+}
+.crawling-claude--right.crawling-claude--reverse {
+  animation-name: crawlVerticalReverse;
+}
+
+/* Horizontal keyframes */
+@keyframes crawlHorizontal {
+  from { left: -60px; }
+  to   { left: calc(100vw + 60px); }
+}
+@keyframes crawlHorizontalReverse {
+  from { left: calc(100vw + 60px); }
+  to   { left: -60px; }
+}
+
+/* Vertical keyframes */
+@keyframes crawlVertical {
+  from { top: calc(100vh + 60px); }
+  to   { top: -60px; }
+}
+@keyframes crawlVerticalReverse {
+  from { top: -60px; }
+  to   { top: calc(100vh + 60px); }
+}

@@ -1,0 +1,141 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #D97757;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  animation: splashIn 0.4s ease;
+  overflow: hidden;
+}
+
+@keyframes splashIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.splash__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 60px;
+  gap: 20px;
+}
+
+.splash__left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.splash__date {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+.splash__subtitle {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.splash__city {
+  font-family: 'Lora', serif;
+  font-size: clamp(60px, 9vw, 120px);
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+/* Globe illustration (SVG image) */
+.splash__right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash__globe-img {
+  width: min(380px, 35vw);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Bottom bar */
+.splash__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 24px 80px 40px;
+}
+
+.splash__hosted {
+  font-family: 'Lora', serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.splash__bottom-logos {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.splash-logo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.splash-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.splash-logo__name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+}
+
+.splash-logo--claude .splash-logo { height: 32px; }
+.splash-logo--aisummit .splash-logo { height: 24px; }
+.splash-logo--wtcb .splash-logo { height: 22px; filter: brightness(0.3); }
+.splash-logo--hapi .splash-logo { height: 22px; filter: brightness(0) saturate(0); opacity: 0.6; }
+
+/* Hint */
+.splash__hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}

@@ -1,0 +1,166 @@
+.event-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 16px;
+  z-index: 50;
+}
+
+.event-header__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.event-header__date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.event-header__separator {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.event-header__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  cursor: default;
+  padding: 0;
+}
+
+.event-header__title--clickable {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.event-header__title--clickable:hover {
+  color: var(--claude-orange);
+}
+
+.event-header__edition {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: rgba(224, 122, 95, 0.15);
+  color: var(--claude-orange);
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.event-header__whatsup {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.event-header__whatsup:hover {
+  border-color: var(--claude-orange);
+  color: var(--claude-orange);
+  background: rgba(224, 122, 95, 0.08);
+}
+
+.event-header__logos {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+/* Logo item = icon + name */
+.header-logo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.header-logo-item:hover {
+  opacity: 1;
+}
+
+.header-logo__icon {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-logo__name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Per-logo tweaks */
+.header-logo--claude .header-logo__icon { height: 24px; }
+.header-logo--claude { opacity: 0.9; }
+
+.header-logo--aisummit .header-logo__icon { height: 22px; }
+
+.header-logo--wtcb .header-logo__icon { height: 18px; filter: brightness(2); }
+
+.header-logo--hapi .header-logo__icon { height: 22px; }
+.header-logo--hapi { opacity: 0.85; }
+
+/* Compact variant for mobile */
+.event-header--compact {
+  padding: 8px 16px;
+}
+
+.event-header--compact .event-header__title {
+  font-size: 13px;
+}
+
+.event-header--compact .event-header__date {
+  display: none;
+}
+
+.event-header--compact .event-header__separator {
+  display: none;
+}
+
+.event-header--compact .event-header__edition {
+  font-size: 9px;
+}
+
+.event-header--compact .header-logo__icon {
+  height: 14px;
+}
+
+.event-header--compact .header-logo__name {
+  display: none;
+}
+
+.event-header--compact .event-header__logos {
+  gap: 10px;
+  overflow: hidden;
+}
+
+.event-header--compact .header-logo-item:nth-child(n+4) {
+  display: none;
+}
