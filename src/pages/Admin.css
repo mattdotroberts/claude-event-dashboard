@@ -45,6 +45,7 @@
 }
 .admin__dot--pending { background: #f59e0b; }
 .admin__dot--approved { background: var(--accent-green); }
+.admin__dot--danger { background: #ef4444; }
 
 .admin__list {
   display: flex;

@@ -9,7 +9,7 @@ import { SplashOverlay } from '../components/SplashOverlay';
 import { WhatsUpClaude } from '../components/WhatsUpClaude';
 import './Dashboard.css';
 
-const TARGET_ATTENDEES = 60;
+const TARGET_ATTENDEES = 200;
 const MOBILE_URL = typeof window !== 'undefined' ? `${window.location.origin}/join` : '/join';
 
 const SPEECH_MESSAGES = [
@@ -86,14 +86,32 @@ export function Dashboard() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showSplash, setShowSplash] = useState(true);
   const [showWhatsUp, setShowWhatsUp] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
 
   return (
     <div className="dashboard">
       <EventHeader onTitleClick={() => setShowSplash(true)} onWhatsUp={() => setShowWhatsUp(true)} />
       {showSplash && <SplashOverlay onClose={() => setShowSplash(false)} />}
       {showWhatsUp && <WhatsUpClaude onClose={() => setShowWhatsUp(false)} />}
+      {showCredits && (
+        <div className="credits-overlay" onClick={() => setShowCredits(false)}>
+          <img src="/free-credits.png" alt="Free API Credits" className="credits-overlay__image" />
+        </div>
+      )}
       <div className="dashboard__grid">
-        {/* Panel 1: People Here */}
+        {/* Row 1: QR | People Here | The Room Is | Barcelona+You */}
+
+        {/* Panel: Claude + QR */}
+        <div className="panel panel--claude">
+          <SpeechBubble count={count} spicyPct={spicyPct} />
+          <ClaudeCharacter size="large" />
+          <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
+          <div className="qr-wrap">
+            <QRCodeSVG value={MOBILE_URL} size={100} bgColor="transparent" fgColor="#e8e0d8" level="M" />
+          </div>
+        </div>
+
+        {/* Panel: People Here */}
         <div className="panel panel--count" onClick={() => setExpanded('count')}>
           <div className="panel__header">
             <span className="panel__label">PEOPLE HERE</span>
@@ -109,19 +127,12 @@ export function Dashboard() {
           <div className="count-label">
             {pct < 30 ? 'Warming up...' : pct < 70 ? 'Filling up nicely' : pct < 95 ? 'Almost there' : 'Full house!'}
           </div>
+          <button className="btn-free-credits" onClick={(e) => { e.stopPropagation(); setShowCredits(true); }}>
+            🎁 Free API Credits
+          </button>
         </div>
 
-        {/* Panel 2: Claude + QR */}
-        <div className="panel panel--claude">
-          <SpeechBubble count={count} spicyPct={spicyPct} />
-          <ClaudeCharacter size="large" />
-          <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
-          <div className="qr-wrap">
-            <QRCodeSVG value={MOBILE_URL} size={100} bgColor="transparent" fgColor="#e8e0d8" level="M" />
-          </div>
-        </div>
-
-        {/* Panel 3: Experience donut */}
+        {/* Panel: Experience donut */}
         <div className="panel panel--donut">
           <div className="panel__header">
             <span className="panel__label">THE ROOM IS...</span>
@@ -129,7 +140,17 @@ export function Dashboard() {
           <DonutChart data={experienceCounts} total={count} />
         </div>
 
-        {/* Panel 4: Spicy Takes (2-col) */}
+        {/* Panel: Barcelona + You */}
+        <div className="panel panel--location" onClick={() => setExpanded('location')}>
+          <div className="panel__header">
+            <span className="panel__label">BARCELONA + YOU</span>
+          </div>
+          <LocationBars data={locationCounts} total={count} />
+        </div>
+
+        {/* Row 2: Spicy Takes (wide) | Hot Topics | Confessions */}
+
+        {/* Panel: Spicy Takes */}
         <div className="panel panel--spicy" onClick={() => setExpanded('spicy')}>
           <div className="panel__header">
             <span className="panel__label">SPICY TAKES</span>
@@ -137,7 +158,7 @@ export function Dashboard() {
           </div>
           {showTake === 0 ? (
             <SpicyPoll
-              statement='🌶️ "AI will replace more jobs than the internet created"'
+              statement='🌶️ "Learning to code in 2026 is a waste of time"'
               options={[
                 { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
                 { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
@@ -147,7 +168,7 @@ export function Dashboard() {
             />
           ) : (
             <SpicyPoll
-              statement='🤖 "Claude is better than ChatGPT"'
+              statement='🤖 "Agents will replace managers before they replace engineers"'
               options={[
                 { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
                 { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },
@@ -180,15 +201,7 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* Panel 6: Barcelona + You */}
-        <div className="panel panel--location" onClick={() => setExpanded('location')}>
-          <div className="panel__header">
-            <span className="panel__label">BARCELONA + YOU</span>
-          </div>
-          <LocationBars data={locationCounts} total={count} />
-        </div>
-
-        {/* Panel 7: Confessions (2-col) */}
+        {/* Panel: Confessions */}
         <div className="panel panel--confessions" onClick={() => setExpanded('confessions')}>
           <div className="panel__header">
             <span className="panel__label">AI CONFESSIONS</span>
@@ -255,7 +268,7 @@ export function Dashboard() {
                 <h2 className="expanded-title">Spicy Takes</h2>
                 <div style={{ marginBottom: 32 }}>
                   <SpicyPoll
-                    statement='🌶️ "AI will replace more jobs than the internet created"'
+                    statement='🌶️ "Learning to code in 2026 is a waste of time"'
                     options={[
                       { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
                       { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
@@ -265,7 +278,7 @@ export function Dashboard() {
                   />
                 </div>
                 <SpicyPoll
-                  statement='🤖 "Claude is better than ChatGPT"'
+                  statement='🤖 "Agents will replace managers before they replace engineers"'
                   options={[
                     { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
                     { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { ClaudeCharacter } from './ClaudeCharacter';
 import './WhatsUpClaude.css';
 
 interface Slide {
@@ -146,7 +147,7 @@ export function WhatsUpClaude({ onClose }: Props) {
                 {slide.body.map((line, i) => (
                   <p
                     key={i}
-                    className={`wuc-slide__line ${i === 0 && !isTitle ? 'wuc-slide__line--lead' : ''}`}
+                    className={`wuc-slide__line ${i === 0 && !isTitle ? 'wuc-slide__line--lead' : ''} ${isTitle ? 'wuc-slide__line--hero-sub' : ''}`}
                     style={{ animationDelay: `${i * 0.08}s` }}
                   >
                     {line}
@@ -157,6 +158,11 @@ export function WhatsUpClaude({ onClose }: Props) {
             {hasImage && (
               <div className="wuc-slide__image-wrap" onClick={() => setLightbox(slide.image!)}>
                 <img src={slide.image} alt={slide.title} className="wuc-slide__image" />
+              </div>
+            )}
+            {isTitle && (
+              <div className="wuc-slide__walker">
+                <ClaudeCharacter size="large" walking />
               </div>
             )}
           </div>

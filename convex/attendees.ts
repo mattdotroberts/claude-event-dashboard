@@ -75,6 +75,23 @@ export const getCount = query({
   },
 });
 
+export const deleteAttendee = mutation({
+  args: { id: v.id("attendees") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
+  },
+});
+
+export const clearAll = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const attendees = await ctx.db.query("attendees").collect();
+    for (const a of attendees) {
+      await ctx.db.delete(a._id);
+    }
+  },
+});
+
 export const getRecent = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, args) => {

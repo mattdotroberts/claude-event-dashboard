@@ -22,7 +22,7 @@ const LOGOS = [
   {
     src: '/logo-happy-operators.png',
     name: 'Happy Operators',
-    url: 'https://www.happyoperators.com',
+    url: 'https://www.happyoperators.com/community',
     className: 'header-logo--hapi',
   },
 ];
@@ -54,10 +54,10 @@ export function EventHeader({ compact = false, onTitleClick, onWhatsUp }: Props)
       </div>
       <div className="event-header__logos">
         {LOGOS.map((logo) => (
-          <div key={logo.url} className={`header-logo-item ${logo.className}`}>
+          <a key={logo.url} href={logo.url} target="_blank" rel="noopener noreferrer" className={`header-logo-item ${logo.className}`}>
             <img src={logo.src} alt={logo.name || logo.className} className="header-logo__icon" />
             {logo.name && <span className="header-logo__name">{logo.name}</span>}
-          </div>
+          </a>
         ))}
       </div>
     </header>

@@ -11,7 +11,7 @@ interface CrawlConfig {
 }
 
 function randomConfig(): CrawlConfig {
-  const edges: Edge[] = ['bottom', 'top', 'left', 'right'];
+  const edges: Edge[] = ['bottom', 'left', 'right'];
   const edge = edges[Math.floor(Math.random() * edges.length)];
   const duration = 14 + Math.random() * 16; // 14–30s
   const reverse = Math.random() > 0.5;

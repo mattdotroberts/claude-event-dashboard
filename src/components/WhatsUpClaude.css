@@ -128,12 +128,41 @@
 
 .wuc-slide--title {
   justify-content: center;
+  align-items: center;
   text-align: center;
   padding-top: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .wuc-slide--title .wuc-slide__text {
   align-items: center;
+  max-width: 800px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Walking Claude across bottom of title slide */
+.wuc-slide__walker {
+  position: absolute;
+  bottom: 16px;
+  left: -120px;
+  animation: wucWalkAcross 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wucWalkAcross {
+  from { left: -120px; }
+  to { left: 100%; }
+}
+
+/* Subtitle on title slide */
+.wuc-slide__line--hero-sub {
+  font-size: 24px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
 }
 
 /* Two-column layout for slides with images */

@@ -5,11 +5,20 @@ import './Admin.css';
 
 export function Admin() {
   const topics = useQuery(api.topics.getAllTopicsWithVotes) ?? [];
+  const attendees = useQuery(api.attendees.getAll) ?? [];
   const approveMutation = useMutation(api.topics.approveTopic);
   const rejectMutation = useMutation(api.topics.rejectTopic);
+  const clearAttendees = useMutation(api.attendees.clearAll);
+  const clearTopics = useMutation(api.topics.clearAll);
 
   const pending = topics.filter((t) => !t.approved);
   const approved = topics.filter((t) => t.approved);
+
+  async function handleReset() {
+    if (!confirm('⚠️ This will delete ALL attendees, topics, and votes. Are you sure?')) return;
+    await clearAttendees();
+    await clearTopics();
+  }
 
   return (
     <div className="admin">
@@ -75,9 +84,30 @@ export function Admin() {
                     {topic.isPreSeeded && ' · Pre-seeded'}
                   </span>
                 </div>
+                <div className="admin__card-actions">
+                  <button
+                    className="admin__btn admin__btn--reject"
+                    onClick={() => rejectMutation({ topicId: topic._id })}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="admin__section admin__section--danger">
+          <h2 className="admin__section-title">
+            <span className="admin__dot admin__dot--danger" />
+            Reset Event ({attendees.length} attendees)
+          </h2>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 12 }}>
+            Wipe all attendees, topics, and votes to start fresh.
+          </p>
+          <button className="admin__btn admin__btn--reject" onClick={handleReset}>
+            🗑️ Reset All Data
+          </button>
         </section>
       </div>
     </div>

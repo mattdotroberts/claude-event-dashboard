@@ -2,11 +2,12 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
 const SEED_TOPICS = [
-  { emoji: "🤖", text: "Agents that work" },
   { emoji: "🏢", text: "AI for non-tech teams" },
   { emoji: "⚖️", text: "EU AI regulation" },
   { emoji: "💰", text: "AI business models" },
   { emoji: "🔧", text: "MCP + tool use" },
+  { emoji: "🏛️", text: "Change management & governance for AI in the enterprise" },
+  { emoji: "⚖️", text: "AI & ethics" },
 ];
 
 export const seedTopics = mutation({
@@ -176,6 +177,33 @@ export const getAllTopicsWithVotes = query({
 
     topicsWithVotes.sort((a, b) => b.voteCount - a.voteCount);
     return topicsWithVotes;
+  },
+});
+
+export const addTopic = mutation({
+  args: { text: v.string(), emoji: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("topics", {
+      text: args.text,
+      emoji: args.emoji,
+      isPreSeeded: true,
+      createdAt: Date.now(),
+      approved: true,
+    });
+  },
+});
+
+export const clearAll = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const topics = await ctx.db.query("topics").collect();
+    for (const t of topics) {
+      await ctx.db.delete(t._id);
+    }
+    const votes = await ctx.db.query("topicVotes").collect();
+    for (const v of votes) {
+      await ctx.db.delete(v._id);
+    }
   },
 });
 

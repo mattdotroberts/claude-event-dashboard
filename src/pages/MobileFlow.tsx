@@ -32,14 +32,16 @@ export function MobileFlow() {
   const updateAttendee = useMutation(api.attendees.updateAttendee);
   const attendeeCount = useQuery(api.attendees.getCount);
 
-  // Check localStorage for returning user
-  const storedId = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+  // Check localStorage for returning user — capture once on mount
+  const [storedId] = useState<string | null>(
+    () => (typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null)
+  );
   const existingAttendee = useQuery(
     api.attendees.getById,
     storedId ? { id: storedId as Id<"attendees"> } : 'skip'
   );
 
-  // On mount, if we have a valid stored attendee, go to done screen
+  // On mount only, if we have a valid stored attendee, go to done screen
   useEffect(() => {
     if (existingAttendee && storedId) {
       setAttendeeId(storedId as Id<"attendees">);
@@ -47,6 +49,9 @@ export function MobileFlow() {
       setRole(existingAttendee.role);
       setReturning(true);
       setScreen('done');
+    } else if (existingAttendee === null && storedId) {
+      // Attendee was deleted — clear stale localStorage
+      localStorage.removeItem(STORAGE_KEY);
     }
   }, [existingAttendee, storedId]);
 
@@ -109,8 +114,6 @@ export function MobileFlow() {
         {screen === 4 && (
           <Screen4
             attendeeId={attendeeId}
-            offer={offer} setOffer={setOffer}
-            need={need} setNeed={setNeed}
             onNext={() => setScreen(5)}
             onSubmitIdentity={async () => {
               if (!experienceLevel || !location || !spicyTake1 || !spicyTake2) return;
@@ -121,8 +124,8 @@ export function MobileFlow() {
                 location,
                 spicyTake1,
                 spicyTake2,
-                offer: offer || 'TBD',
-                need: need || 'TBD',
+                offer: 'TBD',
+                need: 'TBD',
               });
               saveAttendeeId(id);
               return id;
@@ -270,7 +273,7 @@ function Screen3({ spicyTake1, setSpicyTake1, spicyTake2, setSpicyTake2, onNext 
   return (
     <div className="screen">
       <div className="spicy-block">
-        <p className="spicy-block__statement">🌶️ "AI will replace more jobs than the internet created"</p>
+        <p className="spicy-block__statement">🌶️ "Learning to code in 2026 is a waste of time"</p>
         <div className="reaction-buttons">
           <ReactionBtn emoji="👍" label="Agree" selected={spicyTake1 === 'agree'} onClick={() => setSpicyTake1('agree')} />
           <ReactionBtn emoji="👎" label="Disagree" selected={spicyTake1 === 'disagree'} onClick={() => setSpicyTake1('disagree')} />
@@ -279,7 +282,7 @@ function Screen3({ spicyTake1, setSpicyTake1, spicyTake2, setSpicyTake2, onNext 
       </div>
 
       <div className="spicy-block">
-        <p className="spicy-block__statement">🤖 "Claude is better than ChatGPT"</p>
+        <p className="spicy-block__statement">🤖 "Agents will replace managers before they replace engineers"</p>
         <div className="reaction-buttons">
           <ReactionBtn emoji="🔥" label="Obviously" selected={spicyTake2 === 'obviously'} onClick={() => setSpicyTake2('obviously')} />
           <ReactionBtn emoji="🤷" label="Depends" selected={spicyTake2 === 'depends'} onClick={() => setSpicyTake2('depends')} />
@@ -304,11 +307,9 @@ function ReactionBtn({ emoji, label, selected, onClick }: {
   );
 }
 
-/* ---------- Screen 4: Topics + Offer/Need ---------- */
-function Screen4({ attendeeId, offer, setOffer, need, setNeed, onNext, onSubmitIdentity }: {
+/* ---------- Screen 4: Topics ---------- */
+function Screen4({ attendeeId, onNext, onSubmitIdentity }: {
   attendeeId: Id<"attendees"> | null;
-  offer: string; setOffer: (v: string) => void;
-  need: string; setNeed: (v: string) => void;
   onNext: () => void;
   onSubmitIdentity: () => Promise<Id<"attendees"> | undefined>;
 }) {
@@ -365,8 +366,6 @@ function Screen4({ attendeeId, offer, setOffer, need, setNeed, onNext, onSubmitI
     setNewTopic('');
   }
 
-  const valid = offer.trim() && need.trim();
-
   return (
     <div className="screen screen--topics">
       <label className="screen__label">What should we discuss tonight?</label>
@@ -400,18 +399,7 @@ function Screen4({ attendeeId, offer, setOffer, need, setNeed, onNext, onSubmitI
         <button className="btn btn--small" onClick={handlePropose} disabled={!newTopic.trim()}>+</button>
       </div>
 
-      <div className="offer-need">
-        <div className="offer-need__field">
-          <label className="screen__label screen__label--green">✋ I can help with</label>
-          <input className="input" placeholder="e.g. React, design, fundraising" value={offer} onChange={(e) => setOffer(e.target.value)} />
-        </div>
-        <div className="offer-need__field">
-          <label className="screen__label screen__label--blue">🙋 I need help with</label>
-          <input className="input" placeholder="e.g. hiring, AI strategy, Spanish" value={need} onChange={(e) => setNeed(e.target.value)} />
-        </div>
-      </div>
-
-      <button className="btn btn--primary" disabled={!valid} onClick={onNext}>
+      <button className="btn btn--primary" onClick={onNext}>
         Almost done →
       </button>
     </div>
@@ -458,7 +446,7 @@ const POWERED_BY = [
   { src: '/logo-claude.svg', alt: 'Claude', url: 'https://claude.ai', className: 'powered-logo--claude' },
   { src: '/logo-aisummit-full.svg', alt: 'AI Summit Barcelona', url: 'https://aisummitbarcelona.com', className: 'powered-logo--aisummit' },
   { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/WTCB_Logo.svg', alt: 'WTC Barcelona', url: 'https://www.wtcbarcelona.com', className: 'powered-logo--wtcb' },
-  { src: '/logo-happy-operators.png', alt: 'Happy Operators', url: 'https://www.happyoperators.com', className: 'powered-logo--hapi' },
+  { src: '/logo-happy-operators.png', alt: 'Happy Operators', url: 'https://www.happyoperators.com/community', className: 'powered-logo--hapi' },
 ];
 
 function ScreenDone({ number, name, returning, onChangeVotes }: {
