@@ -1,0 +1,74 @@
+.is {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px;
+  min-height: 0;
+}
+
+.is--empty {
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.is__card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: isSlideIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.is__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.is__name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.is__role {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.is__interest {
+  font-family: 'Lora', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.is__bucket {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--claude-orange);
+  background: rgba(224, 122, 95, 0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+@keyframes isSlideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

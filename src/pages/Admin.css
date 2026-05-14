@@ -136,3 +136,17 @@
 .admin__empty-icon {
   font-size: 32px;
 }
+
+.admin__input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  resize: vertical;
+}
+.admin__input:focus { border-color: var(--claude-orange); }

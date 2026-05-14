@@ -9,6 +9,9 @@ import { EventHeader } from '../components/EventHeader';
 import { SplashOverlay } from '../components/SplashOverlay';
 import { WhatsUpClaude } from '../components/WhatsUpClaude';
 import { EventSlides } from '../components/EventSlides';
+import { WordCloud } from '../components/WordCloud';
+import { InterestStream } from '../components/InterestStream';
+import { RoomCanvas } from '../components/RoomCanvas';
 import './Dashboard.css';
 
 const TARGET_ATTENDEES = 200;
@@ -17,11 +20,9 @@ const MOBILE_URL = typeof window !== 'undefined' ? `${window.location.origin}/jo
 const SPEECH_MESSAGES = [
   "Waiting for more humans...",
   "{count} people and counting",
-  "Someone just confessed something",
-  "This room is {spicy}% spicy",
   "Scanning for good vibes",
-  "Processing hot takes",
   "Barcelona + AI = tonight",
+  "Tell us what you want to talk about",
 ];
 
 export function Dashboard() {
@@ -38,45 +39,47 @@ export function Dashboard() {
   // Aggregates
   const experienceCounts = useMemo(() => {
     const c = { curious: 0, daily: 0, builder: 0 };
-    attendees.forEach((a) => { c[a.experienceLevel]++; });
+    attendees.forEach((a) => {
+      if (a.experienceLevel) c[a.experienceLevel]++;
+    });
     return c;
   }, [attendees]);
 
-  const spicy1 = useMemo(() => {
-    const c = { agree: 0, disagree: 0, drink: 0 };
-    attendees.forEach((a) => { c[a.spicyTake1]++; });
-    return c;
+  // Interest aggregation for page 2
+  const interestItems = useMemo(() => {
+    return attendees
+      .filter((a) => a.interest && a.interest.trim().length > 0)
+      .slice()
+      .reverse()
+      .slice(0, 30)
+      .map((a) => ({
+        _id: a._id as string,
+        name: a.name,
+        role: a.role,
+        interest: a.interest!,
+        interestBucket: a.interestBucket,
+      }));
   }, [attendees]);
 
-  const spicy2 = useMemo(() => {
-    const c = { obviously: 0, depends: 0, brave: 0 };
-    attendees.forEach((a) => { c[a.spicyTake2]++; });
-    return c;
+  const interestBuckets = useMemo(() => {
+    const counts = new Map<string, number>();
+    attendees.forEach((a) => {
+      const b = a.interestBucket;
+      if (!b) return;
+      counts.set(b, (counts.get(b) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([bucket, count]) => ({ bucket, count }))
+      .sort((a, b) => b.count - a.count);
   }, [attendees]);
-
-  const confessions = useMemo(
-    () => attendees.filter((a) => a.confession).map((a) => a.confession!).reverse().slice(0, 3),
-    [attendees]
-  );
-
-  const totalSpicy = spicy1.agree + spicy1.disagree + spicy1.drink;
-  const spicyPct = totalSpicy > 0 ? Math.round((spicy1.agree / totalSpicy) * 100) : 0;
-
-  // Cycling spicy take display
-  const [showTake, setShowTake] = useState(0);
-  useEffect(() => {
-    const iv = setInterval(() => setShowTake((p) => (p + 1) % 2), 10000);
-    return () => clearInterval(iv);
-  }, []);
 
   // Ticker items
   const tickerItems = useMemo(() => {
     const items: string[] = [];
     recentAttendees.forEach((a) => items.push(`${a.name} just joined`));
     topics.filter((t) => !t.isPreSeeded).slice(0, 5).forEach((t) => items.push(`New topic: ${t.text}`));
-    if (confessions.length > 0) items.push('New confession 👀');
     return items.length > 0 ? items : ['Waiting for attendees...'];
-  }, [recentAttendees, topics, confessions]);
+  }, [recentAttendees, topics]);
 
   // Expanded panel state
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -86,14 +89,15 @@ export function Dashboard() {
   const [showCredits, setShowCredits] = useState(false);
 
   // Page carousel
-  const [page, setPage] = useState<0 | 1>(0);
-  const PAGE_COUNT = 2;
+  const PAGE_COUNT = 3;
+  type Page = 0 | 1 | 2;
+  const [page, setPage] = useState<Page>(0);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       // Don't grab keys while a modal is open
       if (showSplash || showWhatsUp || showEventSlides || showCredits || expanded) return;
-      if (e.key === 'ArrowRight') { e.preventDefault(); setPage((p) => (p + 1) % PAGE_COUNT as 0 | 1); }
-      if (e.key === 'ArrowLeft')  { e.preventDefault(); setPage((p) => (p - 1 + PAGE_COUNT) % PAGE_COUNT as 0 | 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); setPage((p) => ((p + 1) % PAGE_COUNT) as Page); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); setPage((p) => ((p - 1 + PAGE_COUNT) % PAGE_COUNT) as Page); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -106,11 +110,17 @@ export function Dashboard() {
     if (touchStartX.current === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     if (Math.abs(dx) > 60) {
-      if (dx < 0 && page < PAGE_COUNT - 1) setPage((page + 1) as 0 | 1);
-      else if (dx > 0 && page > 0) setPage((page - 1) as 0 | 1);
+      if (dx < 0 && page < PAGE_COUNT - 1) setPage((page + 1) as Page);
+      else if (dx > 0 && page > 0) setPage((page - 1) as Page);
     }
     touchStartX.current = null;
   }
+
+  // People for the avatar room
+  const roomPeople = useMemo(
+    () => attendees.map((a) => ({ _id: a._id as string, name: a.name, photoUrl: a.photoUrl ?? null })),
+    [attendees]
+  );
 
   return (
     <div className="dashboard">
@@ -155,7 +165,7 @@ export function Dashboard() {
 
             {/* Hero QR (left half) */}
             <div className="panel panel--claude panel--qr-hero">
-              <SpeechBubble count={count} spicyPct={spicyPct} />
+              <SpeechBubble count={count} />
               <ClaudeCharacter size="large" />
               <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
               <div className="qr-wrap qr-wrap--hero">
@@ -192,80 +202,38 @@ export function Dashboard() {
               <DonutChart data={experienceCounts} total={count} />
             </div>
 
-            {/* Hot Topics (bottom right bottom) */}
-            <div className="panel panel--topics" onClick={() => setExpanded('topics')}>
+          </section>
+
+          {/* ================= PAGE 2: What the room wants to talk about ================= */}
+          <section className="dashboard__page dashboard__grid dashboard__grid--p2">
+
+            {/* Word cloud (left, wide) */}
+            <div className="panel panel--cloud">
               <div className="panel__header">
-                <span className="panel__label">HOT TOPICS</span>
-                <span className="panel__badge">{topics.reduce((s, t) => s + t.voteCount, 0)} total votes</span>
+                <span className="panel__label">THE ROOM WANTS TO TALK ABOUT…</span>
+                <span className="panel__badge">{interestBuckets.reduce((s, b) => s + b.count, 0)} answers</span>
               </div>
-              <div className="topics-rank">
-                {topics.slice(0, 6).map((topic) => (
-                  <div className="topic-rank-row" key={topic._id}>
-                    <span className="topic-rank-row__votes">{topic.voteCount}</span>
-                    <span className="topic-rank-row__text">
-                      {topic.emoji && <span>{topic.emoji} </span>}
-                      {topic.text}
-                    </span>
-                    {!topic.isPreSeeded && Date.now() - topic.createdAt < 120000 && (
-                      <span className="badge-new">NEW</span>
-                    )}
-                  </div>
-                ))}
+              <WordCloud buckets={interestBuckets} />
+            </div>
+
+            {/* Live stream (right) */}
+            <div className="panel panel--stream">
+              <div className="panel__header">
+                <span className="panel__label">LIVE</span>
+                <span className="live-badge"><span className="live-dot" /> Live</span>
               </div>
+              <InterestStream items={interestItems} />
             </div>
           </section>
 
-          {/* ================= PAGE 2: Spicy + Confessions ================= */}
-          <section className="dashboard__page dashboard__grid dashboard__grid--p2">
-
-            {/* Spicy Takes (left) */}
-            <div className="panel panel--spicy panel--spicy-page2" onClick={() => setExpanded('spicy')}>
+          {/* ================= PAGE 3: The Room (avatar world) ================= */}
+          <section className="dashboard__page dashboard__grid dashboard__grid--p3">
+            <div className="panel panel--room">
               <div className="panel__header">
-                <span className="panel__label">SPICY TAKES</span>
-                <span className="panel__badge">{totalSpicy} votes</span>
+                <span className="panel__label">THE ROOM</span>
+                <span className="panel__badge">{roomPeople.length} in the room</span>
               </div>
-              {showTake === 0 ? (
-                <SpicyPoll
-                  statement='🌶️ "Learning to code in 2026 is a waste of time"'
-                  options={[
-                    { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
-                    { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
-                    { label: '🍷 After a drink', count: spicy1.drink, color: 'var(--accent-purple)' },
-                  ]}
-                  total={totalSpicy}
-                />
-              ) : (
-                <SpicyPoll
-                  statement='🤖 "Agents will replace managers before they replace engineers"'
-                  options={[
-                    { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
-                    { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },
-                    { label: '😬 Brave to say no', count: spicy2.brave, color: 'var(--accent-purple)' },
-                  ]}
-                  total={spicy2.obviously + spicy2.depends + spicy2.brave}
-                />
-              )}
-            </div>
-
-            {/* Confessions (right, wide) */}
-            <div className="panel panel--confessions panel--confessions-page2" onClick={() => setExpanded('confessions')}>
-              <div className="panel__header">
-                <span className="panel__label">AI CONFESSIONS</span>
-                <span className="panel__badge">Anonymous</span>
-              </div>
-              <div className="confessions-feed confessions-feed--big">
-                {attendees.filter((a) => a.confession).length === 0 && (
-                  <div className="confession-card confession-card--empty">Waiting for confessions...</div>
-                )}
-                {attendees
-                  .filter((a) => a.confession)
-                  .reverse()
-                  .map((a) => (
-                    <div className="confession-card" key={a._id}>
-                      <p>{a.confession}</p>
-                    </div>
-                  ))}
-              </div>
+              <RoomCanvas people={roomPeople} />
             </div>
           </section>
         </div>
@@ -276,7 +244,7 @@ export function Dashboard() {
             <button
               key={i}
               className={`dashboard__pager-dot ${i === page ? 'is-active' : ''}`}
-              onClick={() => setPage(i as 0 | 1)}
+              onClick={() => setPage(i as Page)}
               aria-label={`Go to page ${i + 1}`}
             />
           ))}
@@ -326,32 +294,6 @@ export function Dashboard() {
               </div>
             )}
 
-            {expanded === 'spicy' && (
-              <div className="expanded-content">
-                <h2 className="expanded-title">Spicy Takes</h2>
-                <div style={{ marginBottom: 32 }}>
-                  <SpicyPoll
-                    statement='🌶️ "Learning to code in 2026 is a waste of time"'
-                    options={[
-                      { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
-                      { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
-                      { label: '🍷 After a drink', count: spicy1.drink, color: 'var(--accent-purple)' },
-                    ]}
-                    total={totalSpicy}
-                  />
-                </div>
-                <SpicyPoll
-                  statement='🤖 "Agents will replace managers before they replace engineers"'
-                  options={[
-                    { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
-                    { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },
-                    { label: '😬 Brave to say no', count: spicy2.brave, color: 'var(--accent-purple)' },
-                  ]}
-                  total={spicy2.obviously + spicy2.depends + spicy2.brave}
-                />
-              </div>
-            )}
-
             {expanded === 'topics' && (
               <div className="expanded-content">
                 <h2 className="expanded-title">Hot Topics</h2>
@@ -372,21 +314,6 @@ export function Dashboard() {
               </div>
             )}
 
-            {expanded === 'confessions' && (
-              <div className="expanded-content">
-                <h2 className="expanded-title">AI Confessions</h2>
-                <div className="confessions-feed" style={{ maxHeight: 'none' }}>
-                  {attendees.filter((a) => a.confession).reverse().map((a, i) => (
-                    <div className="confession-card" key={i}>
-                      <p>{a.confession}</p>
-                    </div>
-                  ))}
-                  {attendees.filter((a) => a.confession).length === 0 && (
-                    <div className="confession-card confession-card--empty">No confessions yet...</div>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
@@ -396,7 +323,7 @@ export function Dashboard() {
 
 /* ---------- Sub-components ---------- */
 
-function SpeechBubble({ count, spicyPct }: { count: number; spicyPct: number }) {
+function SpeechBubble({ count }: { count: number }) {
   const [msgIdx, setMsgIdx] = useState(0);
   useEffect(() => {
     const iv = setInterval(() => setMsgIdx((p) => (p + 1) % SPEECH_MESSAGES.length), 4000);
@@ -404,8 +331,7 @@ function SpeechBubble({ count, spicyPct }: { count: number; spicyPct: number }) 
   }, []);
 
   const msg = SPEECH_MESSAGES[msgIdx]
-    .replace('{count}', String(count))
-    .replace('{spicy}', String(spicyPct));
+    .replace('{count}', String(count));
 
   return (
     <div className="speech-bubble" key={msgIdx}>
@@ -468,30 +394,4 @@ function DonutChart({ data, total }: { data: { curious: number; daily: number; b
   );
 }
 
-function SpicyPoll({ statement, options, total }: {
-  statement: string;
-  options: { label: string; count: number; color: string }[];
-  total: number;
-}) {
-  return (
-    <div className="spicy-poll" key={statement}>
-      <p className="spicy-poll__statement">{statement}</p>
-      <div className="spicy-poll__bars">
-        {options.map((opt) => {
-          const pct = total > 0 ? Math.round((opt.count / total) * 100) : 0;
-          return (
-            <div className="poll-bar" key={opt.label}>
-              <span className="poll-bar__label">{opt.label}</span>
-              <div className="poll-bar__track">
-                <div className="poll-bar__fill" style={{ width: `${pct}%`, background: opt.color, transition: 'width 1.5s cubic-bezier(0.4,0,0.2,1)' }}>
-                  {pct > 5 && <span className="poll-bar__pct">{pct}%</span>}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
