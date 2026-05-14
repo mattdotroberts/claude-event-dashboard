@@ -3,6 +3,8 @@ import { MobileFlow } from './pages/MobileFlow'
 import { Dashboard } from './pages/Dashboard'
 import { Groups } from './pages/Groups'
 import { Admin } from './pages/Admin'
+import { Speakers } from './pages/Speakers'
+import { RunOfShow } from './pages/RunOfShow'
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/groups" element={<Groups />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/speakers" element={<Speakers />} />
+        <Route path="/run-of-show" element={<RunOfShow />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

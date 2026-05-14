@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
+import type React from 'react';
 import { ClaudeCharacter } from '../components/ClaudeCharacter';
 import { CrawlingClaude } from '../components/CrawlingClaude';
 import { QRCodeSVG } from 'qrcode.react';
@@ -38,12 +39,6 @@ export function Dashboard() {
   const experienceCounts = useMemo(() => {
     const c = { curious: 0, daily: 0, builder: 0 };
     attendees.forEach((a) => { c[a.experienceLevel]++; });
-    return c;
-  }, [attendees]);
-
-  const locationCounts = useMemo(() => {
-    const c = { local: 0, visiting: 0, temporary: 0, considering: 0 };
-    attendees.forEach((a) => { c[a.location]++; });
     return c;
   }, [attendees]);
 
@@ -90,6 +85,33 @@ export function Dashboard() {
   const [showEventSlides, setShowEventSlides] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
 
+  // Page carousel
+  const [page, setPage] = useState<0 | 1>(0);
+  const PAGE_COUNT = 2;
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Don't grab keys while a modal is open
+      if (showSplash || showWhatsUp || showEventSlides || showCredits || expanded) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); setPage((p) => (p + 1) % PAGE_COUNT as 0 | 1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); setPage((p) => (p - 1 + PAGE_COUNT) % PAGE_COUNT as 0 | 1); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [showSplash, showWhatsUp, showEventSlides, showCredits, expanded]);
+
+  // Touch swipe
+  const touchStartX = useRef<number | null>(null);
+  function onTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX; }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 60) {
+      if (dx < 0 && page < PAGE_COUNT - 1) setPage((page + 1) as 0 | 1);
+      else if (dx > 0 && page > 0) setPage((page - 1) as 0 | 1);
+    }
+    touchStartX.current = null;
+  }
+
   return (
     <div className="dashboard">
       <EventHeader
@@ -102,128 +124,162 @@ export function Dashboard() {
       {showEventSlides && <EventSlides onClose={() => setShowEventSlides(false)} />}
       {showCredits && (
         <div className="credits-overlay" onClick={() => setShowCredits(false)}>
-          <img src="/free-credits.png" alt="Free API Credits" className="credits-overlay__image" />
+          <div className="credits-card" onClick={(e) => e.stopPropagation()}>
+            <div className="credits-card__left">
+              <div className="credits-card__party">🎉</div>
+              <h2 className="credits-card__title">
+                Claude for Builders<br />in Barcelona
+              </h2>
+              <p className="credits-card__sub">
+                Sign up by May 20th to get $20 in free API credits to build with Claude.
+              </p>
+            </div>
+            <div className="credits-card__right">
+              <img src="/credits-qr.png" alt="Scan to redeem" className="credits-card__qr" />
+            </div>
+            <div className="credits-card__logo">
+              <img src="/logo-claude.svg" alt="Claude" />
+            </div>
+          </div>
         </div>
       )}
-      <div className="dashboard__grid">
-        {/* Row 1: QR | People Here | The Room Is | Barcelona+You */}
+      <div
+        className="dashboard__pager"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="dashboard__track" style={{ transform: `translateX(-${page * 100}%)` }}>
 
-        {/* Panel: Claude + QR */}
-        <div className="panel panel--claude">
-          <SpeechBubble count={count} spicyPct={spicyPct} />
-          <ClaudeCharacter size="large" />
-          <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
-          <div className="qr-wrap">
-            <QRCodeSVG value={MOBILE_URL} size={100} bgColor="transparent" fgColor="#e8e0d8" level="M" />
-          </div>
-        </div>
+          {/* ================= PAGE 1: Room state ================= */}
+          <section className="dashboard__page dashboard__grid dashboard__grid--p1">
 
-        {/* Panel: People Here */}
-        <div className="panel panel--count" onClick={() => setExpanded('count')}>
-          <div className="panel__header">
-            <span className="panel__label">PEOPLE HERE</span>
-            <span className="live-badge"><span className="live-dot" /> Live</span>
-          </div>
-          <div className="count-display">
-            <span className="count-display__number">{count}</span>
-            <span className="count-display__target">/ {TARGET_ATTENDEES}</span>
-          </div>
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${Math.min(pct, 100)}%` }} />
-          </div>
-          <div className="count-label">
-            {pct < 30 ? 'Warming up...' : pct < 70 ? 'Filling up nicely' : pct < 95 ? 'Almost there' : 'Full house!'}
-          </div>
-          <button className="btn-free-credits" onClick={(e) => { e.stopPropagation(); setShowCredits(true); }}>
-            🎁 Free API Credits
-          </button>
-        </div>
+            {/* Hero QR (left half) */}
+            <div className="panel panel--claude panel--qr-hero">
+              <SpeechBubble count={count} spicyPct={spicyPct} />
+              <ClaudeCharacter size="large" />
+              <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
+              <div className="qr-wrap qr-wrap--hero">
+                <QRCodeSVG value={MOBILE_URL} size={320} bgColor="transparent" fgColor="#e8e0d8" level="M" />
+              </div>
+            </div>
 
-        {/* Panel: Experience donut */}
-        <div className="panel panel--donut">
-          <div className="panel__header">
-            <span className="panel__label">THE ROOM IS...</span>
-          </div>
-          <DonutChart data={experienceCounts} total={count} />
-        </div>
+            {/* People Here (top right) */}
+            <div className="panel panel--count" onClick={() => setExpanded('count')}>
+              <div className="panel__header">
+                <span className="panel__label">PEOPLE HERE</span>
+                <span className="live-badge"><span className="live-dot" /> Live</span>
+              </div>
+              <div className="count-display count-display--big">
+                <span className="count-display__number">{count}</span>
+                <span className="count-display__target">/ {TARGET_ATTENDEES}</span>
+              </div>
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${Math.min(pct, 100)}%` }} />
+              </div>
+              <div className="count-label">
+                {pct < 30 ? 'Warming up...' : pct < 70 ? 'Filling up nicely' : pct < 95 ? 'Almost there' : 'Full house!'}
+              </div>
+              <button className="btn-free-credits" onClick={(e) => { e.stopPropagation(); setShowCredits(true); }}>
+                🎁 Free API Credits
+              </button>
+            </div>
 
-        {/* Panel: Barcelona + You */}
-        <div className="panel panel--location" onClick={() => setExpanded('location')}>
-          <div className="panel__header">
-            <span className="panel__label">BARCELONA + YOU</span>
-          </div>
-          <LocationBars data={locationCounts} total={count} />
-        </div>
+            {/* The Room Is (bottom right top) */}
+            <div className="panel panel--donut">
+              <div className="panel__header">
+                <span className="panel__label">THE ROOM IS...</span>
+              </div>
+              <DonutChart data={experienceCounts} total={count} />
+            </div>
 
-        {/* Row 2: Spicy Takes (wide) | Hot Topics | Confessions */}
+            {/* Hot Topics (bottom right bottom) */}
+            <div className="panel panel--topics" onClick={() => setExpanded('topics')}>
+              <div className="panel__header">
+                <span className="panel__label">HOT TOPICS</span>
+                <span className="panel__badge">{topics.reduce((s, t) => s + t.voteCount, 0)} total votes</span>
+              </div>
+              <div className="topics-rank">
+                {topics.slice(0, 6).map((topic) => (
+                  <div className="topic-rank-row" key={topic._id}>
+                    <span className="topic-rank-row__votes">{topic.voteCount}</span>
+                    <span className="topic-rank-row__text">
+                      {topic.emoji && <span>{topic.emoji} </span>}
+                      {topic.text}
+                    </span>
+                    {!topic.isPreSeeded && Date.now() - topic.createdAt < 120000 && (
+                      <span className="badge-new">NEW</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
-        {/* Panel: Spicy Takes */}
-        <div className="panel panel--spicy" onClick={() => setExpanded('spicy')}>
-          <div className="panel__header">
-            <span className="panel__label">SPICY TAKES</span>
-            <span className="panel__badge">{totalSpicy} votes</span>
-          </div>
-          {showTake === 0 ? (
-            <SpicyPoll
-              statement='🌶️ "Learning to code in 2026 is a waste of time"'
-              options={[
-                { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
-                { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
-                { label: '🍷 After a drink', count: spicy1.drink, color: 'var(--accent-purple)' },
-              ]}
-              total={totalSpicy}
-            />
-          ) : (
-            <SpicyPoll
-              statement='🤖 "Agents will replace managers before they replace engineers"'
-              options={[
-                { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
-                { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },
-                { label: '😬 Brave to say no', count: spicy2.brave, color: 'var(--accent-purple)' },
-              ]}
-              total={spicy2.obviously + spicy2.depends + spicy2.brave}
-            />
-          )}
-        </div>
+          {/* ================= PAGE 2: Spicy + Confessions ================= */}
+          <section className="dashboard__page dashboard__grid dashboard__grid--p2">
 
-        {/* Panel 5: Hot Topics */}
-        <div className="panel panel--topics" onClick={() => setExpanded('topics')}>
-          <div className="panel__header">
-            <span className="panel__label">HOT TOPICS</span>
-            <span className="panel__badge">{topics.reduce((s, t) => s + t.voteCount, 0)} total votes</span>
-          </div>
-          <div className="topics-rank">
-            {topics.slice(0, 6).map((topic, i) => (
-              <div className="topic-rank-row" key={topic._id}>
-                <span className="topic-rank-row__votes">{topic.voteCount}</span>
-                <span className="topic-rank-row__text">
-                  {topic.emoji && <span>{topic.emoji} </span>}
-                  {topic.text}
-                </span>
-                {!topic.isPreSeeded && Date.now() - topic.createdAt < 120000 && (
-                  <span className="badge-new">NEW</span>
+            {/* Spicy Takes (left) */}
+            <div className="panel panel--spicy panel--spicy-page2" onClick={() => setExpanded('spicy')}>
+              <div className="panel__header">
+                <span className="panel__label">SPICY TAKES</span>
+                <span className="panel__badge">{totalSpicy} votes</span>
+              </div>
+              {showTake === 0 ? (
+                <SpicyPoll
+                  statement='🌶️ "Learning to code in 2026 is a waste of time"'
+                  options={[
+                    { label: '👍 Agree', count: spicy1.agree, color: 'var(--claude-orange)' },
+                    { label: '👎 Disagree', count: spicy1.disagree, color: 'var(--accent-blue)' },
+                    { label: '🍷 After a drink', count: spicy1.drink, color: 'var(--accent-purple)' },
+                  ]}
+                  total={totalSpicy}
+                />
+              ) : (
+                <SpicyPoll
+                  statement='🤖 "Agents will replace managers before they replace engineers"'
+                  options={[
+                    { label: '🔥 Obviously', count: spicy2.obviously, color: 'var(--claude-orange)' },
+                    { label: '🤷 Depends', count: spicy2.depends, color: 'var(--accent-blue)' },
+                    { label: '😬 Brave to say no', count: spicy2.brave, color: 'var(--accent-purple)' },
+                  ]}
+                  total={spicy2.obviously + spicy2.depends + spicy2.brave}
+                />
+              )}
+            </div>
+
+            {/* Confessions (right, wide) */}
+            <div className="panel panel--confessions panel--confessions-page2" onClick={() => setExpanded('confessions')}>
+              <div className="panel__header">
+                <span className="panel__label">AI CONFESSIONS</span>
+                <span className="panel__badge">Anonymous</span>
+              </div>
+              <div className="confessions-feed confessions-feed--big">
+                {attendees.filter((a) => a.confession).length === 0 && (
+                  <div className="confession-card confession-card--empty">Waiting for confessions...</div>
                 )}
+                {attendees
+                  .filter((a) => a.confession)
+                  .reverse()
+                  .map((a) => (
+                    <div className="confession-card" key={a._id}>
+                      <p>{a.confession}</p>
+                    </div>
+                  ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </section>
         </div>
 
-        {/* Panel: Confessions */}
-        <div className="panel panel--confessions" onClick={() => setExpanded('confessions')}>
-          <div className="panel__header">
-            <span className="panel__label">AI CONFESSIONS</span>
-            <span className="panel__badge">Anonymous</span>
-          </div>
-          <div className="confessions-feed">
-            {confessions.length === 0 && (
-              <div className="confession-card confession-card--empty">Waiting for confessions...</div>
-            )}
-            {confessions.map((c, i) => (
-              <div className="confession-card" key={i}>
-                <p>{c}</p>
-              </div>
-            ))}
-          </div>
+        {/* Pager dots */}
+        <div className="dashboard__pager-dots">
+          {Array.from({ length: PAGE_COUNT }).map((_, i) => (
+            <button
+              key={i}
+              className={`dashboard__pager-dot ${i === page ? 'is-active' : ''}`}
+              onClick={() => setPage(i as 0 | 1)}
+              aria-label={`Go to page ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
 
@@ -313,13 +369,6 @@ export function Dashboard() {
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {expanded === 'location' && (
-              <div className="expanded-content">
-                <h2 className="expanded-title">Barcelona + You</h2>
-                <LocationBars data={locationCounts} total={count} />
               </div>
             )}
 
@@ -446,30 +495,3 @@ function SpicyPoll({ statement, options, total }: {
   );
 }
 
-function LocationBars({ data, total }: {
-  data: { local: number; visiting: number; temporary: number; considering: number };
-  total: number;
-}) {
-  const rows = [
-    { emoji: '🏠', label: 'Live here', count: data.local, color: 'var(--claude-orange)' },
-    { emoji: '✈️', label: 'Passing through', count: data.visiting, color: 'var(--accent-blue)' },
-    { emoji: '🧳', label: 'Here temporarily', count: data.temporary, color: 'var(--accent-purple)' },
-    { emoji: '🤔', label: 'Thinking of moving', count: data.considering, color: 'var(--accent-green)' },
-  ];
-  return (
-    <div className="location-bars">
-      {rows.map((row) => {
-        const pct = total > 0 ? Math.round((row.count / total) * 100) : 0;
-        return (
-          <div className="location-row" key={row.label}>
-            <span className="location-row__label">{row.emoji} {row.label}</span>
-            <div className="location-row__track">
-              <div className="location-row__fill" style={{ width: `${pct}%`, background: row.color, transition: 'width 1.5s cubic-bezier(0.4,0,0.2,1)' }} />
-            </div>
-            <span className="location-row__count">{row.count}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
