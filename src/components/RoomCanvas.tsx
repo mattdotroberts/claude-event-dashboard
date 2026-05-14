@@ -57,8 +57,8 @@ export function RoomCanvas({ people }: Props) {
           _id: p._id,
           name: p.name,
           photoUrl: p.photoUrl ?? null,
-          x: 80 + Math.random() * (w - 160),
-          y: 100 + Math.random() * (h - 200),
+          x: 80 + Math.random() * Math.max(120, w - 160),
+          y: 120 + Math.random() * Math.max(120, h - 220),
           vx: Math.cos(angle) * SPEED,
           vy: Math.sin(angle) * SPEED,
           phase: Math.random() * Math.PI * 2,
@@ -135,10 +135,10 @@ export function RoomCanvas({ people }: Props) {
         s.x += s.vx * dt * 0.06;
         s.y += s.vy * dt * 0.06;
         // Bounce off walls (keep avatar inside the floor area)
-        if (s.x < HEAD_R + 4) { s.x = HEAD_R + 4; s.vx = Math.abs(s.vx); }
-        if (s.x > w - HEAD_R - 4) { s.x = w - HEAD_R - 4; s.vx = -Math.abs(s.vx); }
-        if (s.y < HEAD_R + 80) { s.y = HEAD_R + 80; s.vy = Math.abs(s.vy); }
-        if (s.y > h - 28) { s.y = h - 28; s.vy = -Math.abs(s.vy); }
+        if (s.x < HEAD_R + 8) { s.x = HEAD_R + 8; s.vx = Math.abs(s.vx); }
+        if (s.x > w - HEAD_R - 8) { s.x = w - HEAD_R - 8; s.vx = -Math.abs(s.vx); }
+        if (s.y < HEAD_R + 100) { s.y = HEAD_R + 100; s.vy = Math.abs(s.vy); }
+        if (s.y > h - 60) { s.y = h - 60; s.vy = -Math.abs(s.vy); }
         // Tiny random jitter so paths don't look linear
         if (Math.random() < 0.005) {
           const a = Math.atan2(s.vy, s.vx) + (Math.random() - 0.5) * 0.6;
