@@ -128,7 +128,8 @@
 }
 
 .mobile__btn {
-  flex: 1;
+  flex: 0 0 auto;
+  align-self: stretch;
   background: var(--claude-orange);
   color: #fff;
   border: none;
@@ -139,6 +140,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s, opacity 0.15s, transform 0.05s;
+}
+/* Inside a row of buttons, share width equally */
+.mobile__actions .mobile__btn {
+  flex: 1 1 0;
 }
 .mobile__btn:active { transform: scale(0.98); }
 .mobile__btn:disabled { opacity: 0.4; cursor: default; }
