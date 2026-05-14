@@ -68,6 +68,13 @@ function SpeakerSection({ speaker, index }: { speaker: Speaker; index: number })
         </div>
       )}
 
+      {speaker.funFact && (
+        <div className="speaker-section__block">
+          <h3 className="speaker-section__block-title">Fun fact</h3>
+          <p className="speaker-section__funfact">{speaker.funFact}</p>
+        </div>
+      )}
+
       <div className="speaker-section__block">
         <h3 className="speaker-section__block-title">Starter questions</h3>
         {(speaker.questions ?? []).length > 0 ? (
