@@ -17,8 +17,8 @@ export function SplashOverlay({ onClose }: Props) {
       <div className="splash__content">
         {/* Left side - text */}
         <div className="splash__left">
-          <p className="splash__date">9 April 2026</p>
-          <h2 className="splash__subtitle">Claude Code for Everyone #2</h2>
+          <p className="splash__date">14 May 2026</p>
+          <h2 className="splash__subtitle">Claude Code for Builders #3</h2>
           <h1 className="splash__city">Barcelona</h1>
         </div>
 
