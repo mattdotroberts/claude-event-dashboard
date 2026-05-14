@@ -224,6 +224,11 @@
   margin-top: 8px;
   width: 100%;
 }
+.mobile__photo-frame {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
 .mobile__photo-preview {
   width: 120px;
   height: 120px;
@@ -231,6 +236,11 @@
   object-fit: cover;
   border: 3px solid var(--claude-orange);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  display: block;
+  transition: filter 0.3s ease;
+}
+.mobile__photo-preview.is-uploading {
+  filter: brightness(0.55) saturate(0.7);
 }
 .mobile__photo-placeholder {
   width: 120px;
@@ -244,9 +254,44 @@
   font-size: 40px;
   color: var(--text-muted);
 }
+.mobile__photo-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.mobile__photo-overlay--done {
+  font-size: 48px;
+  color: var(--claude-orange);
+  font-weight: 700;
+  animation: mfPhotoCheck 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+}
+@keyframes mfPhotoCheck {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+.mobile__photo-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--claude-orange);
+  border-radius: 50%;
+  animation: mfPhotoSpin 0.9s linear infinite;
+}
+@keyframes mfPhotoSpin {
+  to { transform: rotate(360deg); }
+}
 .mobile__photo-btn {
   cursor: pointer;
   text-align: center;
+  transition: opacity 0.2s;
+}
+.mobile__photo-btn.is-busy {
+  opacity: 0.7;
+  cursor: progress;
 }
 .mobile__photo-btn input { display: none; }
 .mobile__photo-hint {
