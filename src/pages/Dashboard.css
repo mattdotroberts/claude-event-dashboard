@@ -31,12 +31,17 @@
 
 .dashboard__pager-dots {
   position: absolute;
-  bottom: 56px;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   gap: 10px;
   z-index: 5;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dashboard__pager-dot {
@@ -89,14 +94,20 @@
 .dashboard__grid--p3 {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
+  padding: 12px 12px 12px; /* shrink bottom pad — pager dots sit on top of the room */
 }
 .dashboard__grid--p3 .panel--room {
   grid-column: 1;
   grid-row: 1;
   cursor: default;
   padding: 12px;
+  min-height: 0;
 }
 .dashboard__grid--p3 .panel--room:hover { border-color: var(--border); }
+.dashboard__grid--p3 .panel--room .room-canvas {
+  /* leave room for the pager dots overlay at the bottom */
+  padding-bottom: 0;
+}
 
 /* Panel base */
 .panel {
