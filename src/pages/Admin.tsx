@@ -26,6 +26,32 @@ export function Admin() {
       <div className="admin__content">
         <h1 className="admin__title">Topic Moderation</h1>
 
+        <section className="admin__section">
+          <h2 className="admin__section-title">
+            <span className="admin__dot admin__dot--approved" />
+            Host
+          </h2>
+          <a
+            href="/speakers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin__btn admin__btn--approve"
+            style={{ textDecoration: 'none', display: 'inline-block', marginRight: 8 }}
+          >
+            🎤 Speaker notes →
+          </a>
+          <a
+            href="/run-of-show"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin__btn admin__btn--approve"
+            style={{ textDecoration: 'none', display: 'inline-block' }}
+          >
+            📋 Run of show →
+          </a>
+        </section>
+
+
         {pending.length > 0 && (
           <section className="admin__section">
             <h2 className="admin__section-title">

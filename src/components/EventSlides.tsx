@@ -1,12 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { SPEAKERS, type Speaker } from '../data/speakers';
 import './EventSlides.css';
-
-interface Speaker {
-  name: string;
-  position: string;
-  photo: string;
-  talkTitle: string;
-}
 
 type EventSlide =
   | {
@@ -18,40 +12,14 @@ type EventSlide =
   | { kind: 'agenda'; title: string; items: { time?: string; label: string }[] }
   | { kind: 'speakerGrid'; title: string; speakers: Speaker[] }
   | { kind: 'speaker'; talkTitle: string; speaker: Speaker }
-  | { kind: 'fullBleed'; image: string; alt: string };
+  | { kind: 'fullBleed'; image: string; alt: string }
+  | { kind: 'credits' };
 
 const SPLASH_LOGOS = [
   { src: '/logo-claude.svg', alt: 'Claude', className: 'splash-logo--claude' },
   { src: '/logo-aisummit-full.svg', alt: 'AI Summit Barcelona', className: 'splash-logo--aisummit' },
   { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/WTCB_Logo.svg', alt: 'WTC Barcelona', className: 'splash-logo--wtcb' },
   { src: '/logo-happy-operators.png', alt: 'Happy Operators', className: 'splash-logo--hapi', showName: true },
-];
-
-const SPEAKERS: Speaker[] = [
-  {
-    name: 'Sara Noureldin',
-    position: 'CTO of Anda',
-    photo: '/speakers/sara.png',
-    talkTitle: 'Decoding how an African city moves with Claude Code',
-  },
-  {
-    name: 'Sergey Cherepanov',
-    position: 'CTO of Guass',
-    photo: '/speakers/sergey.jpeg',
-    talkTitle: 'Razzmatazzing and Recombobulating: A harness for testing',
-  },
-  {
-    name: 'Al Ste-Marie',
-    position: 'Founder, The Unsold Group',
-    photo: '/speakers/al.jpeg',
-    talkTitle: 'Hatching Flipper 🐧 with Claude Managed Agents',
-  },
-  {
-    name: 'Heather Thacker',
-    position: 'Developer Advocate at Gatling',
-    photo: '/speakers/heather.jpeg',
-    talkTitle: 'Developer Content Flywheel: Using Claude to Turn Code Into Career Capital',
-  },
 ];
 
 const EVENT_SLIDES: EventSlide[] = [
@@ -81,7 +49,7 @@ const EVENT_SLIDES: EventSlide[] = [
     talkTitle: s.talkTitle,
     speaker: s,
   })),
-  { kind: 'fullBleed', image: '/free-credits.png', alt: 'Anthropic API Credits' },
+  { kind: 'credits' },
 ];
 
 interface Props {
@@ -286,6 +254,29 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
           onClick={() => openLightbox(slide.image)}
         >
           <img src={slide.image} alt={slide.alt} className="es-fullbleed__img" />
+        </div>
+      );
+
+    case 'credits':
+      return (
+        <div className="es-credits-wrap">
+          <div className="credits-card credits-card--in-deck">
+            <div className="credits-card__left">
+              <div className="credits-card__party">🎉</div>
+              <h2 className="credits-card__title">
+                Claude for Builders<br />in Barcelona
+              </h2>
+              <p className="credits-card__sub">
+                Sign up by May 20th to get $20 in free API credits to build with Claude.
+              </p>
+            </div>
+            <div className="credits-card__right">
+              <img src="/credits-qr.png" alt="Scan to redeem" className="credits-card__qr" />
+            </div>
+            <div className="credits-card__logo">
+              <img src="/logo-claude.svg" alt="Claude" />
+            </div>
+          </div>
         </div>
       );
   }

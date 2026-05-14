@@ -1,0 +1,295 @@
+.speakers-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 64px 24px 96px;
+}
+
+.speakers-page__inner {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.speakers-page__header {
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 32px;
+}
+
+.speakers-page__kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--claude-orange);
+  margin: 0 0 12px;
+}
+
+.speakers-page__title {
+  font-family: 'Lora', serif;
+  font-size: 64px;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  margin: 0 0 12px;
+  color: var(--text-primary);
+}
+
+.speakers-page__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ---------- Index ---------- */
+.speakers-toc {
+  margin-bottom: 64px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+
+.speakers-toc__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.speakers-toc__item { margin: 0; }
+
+.speakers-toc__link {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  transition: background 0.15s ease;
+}
+
+.speakers-toc__link:hover {
+  background: rgba(224, 122, 95, 0.08);
+}
+
+.speakers-toc__num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--claude-orange);
+  font-weight: 600;
+}
+
+.speakers-toc__name {
+  font-weight: 600;
+}
+
+.speakers-toc__role {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ---------- Speaker section ---------- */
+.speaker-section {
+  margin-bottom: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--border);
+}
+
+.speaker-section:last-of-type {
+  border-bottom: none;
+}
+
+.speaker-section__head {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.speaker-section__photo-wrap {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+}
+
+.speaker-section__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.speaker-section__index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--claude-orange);
+  margin: 0 0 6px;
+}
+
+.speaker-section__name {
+  font-family: 'Lora', serif;
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin: 0 0 6px;
+  color: var(--text-primary);
+}
+
+.speaker-section__position {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0 0 14px;
+}
+
+.speaker-section__talk {
+  font-family: 'Lora', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.speaker-section__talk-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 12px;
+  vertical-align: middle;
+  background: var(--bg-elevated);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.speaker-section__block {
+  margin-top: 24px;
+}
+
+.speaker-section__block-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.speaker-section__bio {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.speaker-section__notes {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.speaker-section__notes li::marker {
+  color: var(--claude-orange);
+}
+
+.speaker-section__qgroups {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.speaker-section__qgroup-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--claude-orange);
+  margin: 0 0 8px;
+}
+
+.speaker-section__empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.speaker-section__back-to-top {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.speaker-section__back-to-top:hover {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+/* ---------- Footer ---------- */
+.speakers-page__footer {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.speakers-page__back {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.speakers-page__back:hover {
+  color: var(--text-primary);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .speakers-page { padding: 32px 16px 64px; }
+  .speakers-page__title { font-size: 44px; }
+  .speaker-section__head {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+  .speaker-section__photo-wrap { width: 120px; height: 120px; }
+  .speaker-section__name { font-size: 30px; }
+  .speaker-section__talk { font-size: 17px; }
+  .speakers-toc__link { grid-template-columns: 28px 1fr; }
+  .speakers-toc__role { grid-column: 2; font-size: 13px; }
+}
