@@ -34,9 +34,11 @@ const EVENT_SLIDES: EventSlide[] = [
     title: 'Agenda',
     items: [
       { time: '6.30pm', label: 'Opening Remarks' },
+      { time: '6.35pm', label: 'AI Summit giveaway 🎁' },
       { time: '6.40pm', label: 'Community Talks' },
-      { time: '7.30pm', label: 'Cheese, Wine and Razzamatazzing' },
-      { time: '9.00pm', label: '....' },
+      { time: '8.00pm', label: 'Anthropic giveaway 🎁' },
+      { time: '8.05pm', label: 'Next event preview 📣' },
+      { time: '8.10pm', label: 'Cheese, Wine and Razzamatazzing' },
     ],
   },
   {

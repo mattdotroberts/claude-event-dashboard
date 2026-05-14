@@ -7,6 +7,8 @@ export interface Speaker {
   time?: string;
   /** Short scannable bio (read out from stage). */
   bio?: string;
+  /** Single fun-fact line — read on stage as an ice-breaker. */
+  funFact?: string;
   /** Grouped starter questions. */
   questions?: { group: string; items: string[] }[];
 }
@@ -17,8 +19,9 @@ export const SPEAKERS: Speaker[] = [
     position: 'Founder, The Unsold Group',
     photo: '/speakers/al.jpeg',
     talkTitle: 'Hatching Flipper 🐧 with Claude Managed Agents',
-    time: '18:40',
+    time: '18:40 (15 min)',
     bio: 'Al is the founder of The Unsold Group. He has been building Flipper 🐧 — an experiment in running a real product end-to-end with Claude Managed Agents. If you want to know what happens when you stop treating AI like a tool and start treating it like a co-founder, Al is your person. (TODO: confirm + tighten with Al.)',
+    funFact: 'Went to Antarctica with DJ Diplo (the first DJ to play offshore of Antarctica). Permanent daylight and dancing the night away was the origin story of the business.',
     questions: [
       {
         group: 'Easy / warm-up',
@@ -57,8 +60,9 @@ export const SPEAKERS: Speaker[] = [
     position: 'Developer Advocate at Gatling',
     photo: '/speakers/heather.jpeg',
     talkTitle: 'Developer Content Flywheel: Using Claude to Turn Code Into Career Capital',
-    time: '19:10',
+    time: '18:55 (15 min)',
     bio: 'Heather is a Developer Advocate at Gatling. She has spent the last year turning a developer content flywheel into actual career capital — using Claude to translate code into talks, posts, demos, and audience. If you want to know how to compound your engineering output into a public footprint, Heather has done it. (TODO: confirm + tighten with Heather.)',
+    funFact: 'Lives in Gràcia with two dogs and a cat.',
     questions: [
       {
         group: 'Easy / warm-up',
@@ -97,8 +101,9 @@ export const SPEAKERS: Speaker[] = [
     position: 'CTO of Guass',
     photo: '/speakers/sergey.jpeg',
     talkTitle: 'Razzmatazzing and Recombobulating: A harness for testing',
-    time: '19:40',
+    time: '19:10 (25 min)',
     bio: 'Sergey is CTO of Guass. He has been building a testing harness that combines Claude with a deliberately playful approach to making sure code actually works — what he calls razzmatazzing and recombobulating. If you have ever stared at a flaky test suite and wished there was a smarter way through, Sergey has been living that problem. (TODO: confirm + tighten with Sergey.)',
+    funFact: 'Writes and reads code in Haskell — a language nobody believes is actually used in production.',
     questions: [
       {
         group: 'Easy / warm-up',
@@ -137,8 +142,9 @@ export const SPEAKERS: Speaker[] = [
     position: 'CTO of Anda',
     photo: '/speakers/sara.png',
     talkTitle: 'Decoding how an African city moves with Claude Code',
-    time: '20:10',
+    time: '19:35 (25 min)',
     bio: 'Sara Noureldin is CTO of Anda, building driver-financing rails for ride-hailing. Previously Microsoft Cloud and BCG AI, now scaling engineering with Claude Code as her force multiplier.',
+    funFact: 'Appears as an extra in an Amazon movie called "The Vineyard."',
     questions: [
       {
         group: 'Easy / warm-up',

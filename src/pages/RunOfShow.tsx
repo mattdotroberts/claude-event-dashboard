@@ -30,15 +30,14 @@ export function RunOfShow() {
             <tr><td>17:30</td><td>Speaker check-in</td></tr>
             <tr><td>18:00</td><td>Doors open &amp; networking</td></tr>
             <tr><td>18:30</td><td>Opening Remarks</td></tr>
-            <tr className="ros__row--highlight"><td>18:40</td><td>Al Ste-Marie, The Unsold Group</td></tr>
-            <tr><td>19:00</td><td>Q&amp;A</td></tr>
-            <tr className="ros__row--highlight"><td>19:10</td><td>Heather Thacker, Gatling</td></tr>
-            <tr><td>19:30</td><td>Q&amp;A</td></tr>
-            <tr className="ros__row--highlight"><td>19:40</td><td>Sergey Cherepanov, Guass</td></tr>
-            <tr><td>20:00</td><td>Q&amp;A</td></tr>
-            <tr className="ros__row--highlight"><td>20:10</td><td>Sara Noureldin, Anda</td></tr>
-            <tr><td>20:30</td><td>Q&amp;A</td></tr>
-            <tr className="ros__row--hard"><td>20:40</td><td>Cheese, Wine &amp; Networking</td></tr>
+            <tr><td>18:35</td><td>AI Summit giveaway 🎁</td></tr>
+            <tr className="ros__row--highlight"><td>18:40 – 18:55</td><td>Al Ste-Marie, The Unsold Group <em>(15 min)</em></td></tr>
+            <tr className="ros__row--highlight"><td>18:55 – 19:10</td><td>Heather Thacker, Gatling <em>(15 min)</em></td></tr>
+            <tr className="ros__row--highlight"><td>19:10 – 19:35</td><td>Sergey Cherepanov, Guass <em>(25 min)</em></td></tr>
+            <tr className="ros__row--highlight"><td>19:35 – 20:00</td><td>Sara Noureldin, Anda <em>(25 min)</em></td></tr>
+            <tr><td>20:00</td><td>Anthropic giveaway 🎁</td></tr>
+            <tr><td>20:05</td><td>Next event preview 📣</td></tr>
+            <tr className="ros__row--hard"><td>20:10</td><td>Cheese, Wine &amp; Networking</td></tr>
           </tbody>
         </table>
 
