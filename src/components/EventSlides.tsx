@@ -42,6 +42,7 @@ const EVENT_SLIDES: EventSlide[] = [
       { time: '8.00pm', label: 'Cheese, Wine and Razzamatazzing' },
     ],
   },
+  { kind: 'fullBleed', image: '/ai-summit-ticket.png', alt: 'Get a free ticket for AI Summit Barcelona' },
   {
     kind: 'speakerGrid',
     title: 'Speakers',
@@ -59,6 +60,7 @@ const EVENT_SLIDES: EventSlide[] = [
     title: 'Claude for Creativity',
     subtitle: 'A design-focused community meetup',
   },
+  { kind: 'fullBleed', image: '/ai-summit-ticket.png', alt: 'Get a free ticket for AI Summit Barcelona' },
 ];
 
 interface Props {
