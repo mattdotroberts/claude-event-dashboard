@@ -7,6 +7,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { EventHeader } from '../components/EventHeader';
 import { SplashOverlay } from '../components/SplashOverlay';
 import { WhatsUpClaude } from '../components/WhatsUpClaude';
+import { EventSlides } from '../components/EventSlides';
 import './Dashboard.css';
 
 const TARGET_ATTENDEES = 200;
@@ -86,13 +87,19 @@ export function Dashboard() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [showSplash, setShowSplash] = useState(true);
   const [showWhatsUp, setShowWhatsUp] = useState(false);
+  const [showEventSlides, setShowEventSlides] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
 
   return (
     <div className="dashboard">
-      <EventHeader onTitleClick={() => setShowSplash(true)} onWhatsUp={() => setShowWhatsUp(true)} />
+      <EventHeader
+        onTitleClick={() => setShowSplash(true)}
+        onWhatsUp={() => setShowWhatsUp(true)}
+        onEventSlides={() => setShowEventSlides(true)}
+      />
       {showSplash && <SplashOverlay onClose={() => setShowSplash(false)} />}
       {showWhatsUp && <WhatsUpClaude onClose={() => setShowWhatsUp(false)} />}
+      {showEventSlides && <EventSlides onClose={() => setShowEventSlides(false)} />}
       {showCredits && (
         <div className="credits-overlay" onClick={() => setShowCredits(false)}>
           <img src="/free-credits.png" alt="Free API Credits" className="credits-overlay__image" />

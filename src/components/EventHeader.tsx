@@ -31,24 +31,30 @@ interface Props {
   compact?: boolean;
   onTitleClick?: () => void;
   onWhatsUp?: () => void;
+  onEventSlides?: () => void;
 }
 
-export function EventHeader({ compact = false, onTitleClick, onWhatsUp }: Props) {
+export function EventHeader({ compact = false, onTitleClick, onWhatsUp, onEventSlides }: Props) {
   return (
     <header className={`event-header ${compact ? 'event-header--compact' : ''}`}>
       <div className="event-header__left">
-        <span className="event-header__date">9 April 2026</span>
+        <span className="event-header__date">14 May 2026</span>
         <span className="event-header__separator">·</span>
         <button
           className={`event-header__title ${onTitleClick ? 'event-header__title--clickable' : ''}`}
           onClick={onTitleClick}
         >
-          Claude for Everyone
+          Claude Code for Builders
         </button>
-        <span className="event-header__edition">Barcelona #2</span>
+        <span className="event-header__edition">Barcelona #3</span>
         {onWhatsUp && (
           <button className="event-header__whatsup" onClick={onWhatsUp}>
             What's up Claude?
+          </button>
+        )}
+        {onEventSlides && (
+          <button className="event-header__whatsup" onClick={onEventSlides}>
+            Tonight
           </button>
         )}
       </div>
