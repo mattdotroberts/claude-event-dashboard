@@ -102,7 +102,7 @@ export const SPEAKERS: Speaker[] = [
     photo: '/speakers/sergey.jpeg',
     talkTitle: 'Razzmatazzing and Recombobulating: A harness for testing',
     time: '19:00 (25 min)',
-    bio: 'Sergey is CTO of Guass. He has been building a testing harness that combines Claude with a deliberately playful approach to making sure code actually works — what he calls razzmatazzing and recombobulating. If you have ever stared at a flaky test suite and wished there was a smarter way through, Sergey has been living that problem. (TODO: confirm + tighten with Sergey.)',
+    bio: "Hands-on CTO (YC W22 Batch) and Haskell developer. Leads a small team of engineers. And the team still understands what's going on in the codebase.",
     funFact: 'Writes and reads code in Haskell — a language nobody believes is actually used in production.',
     questions: [
       {

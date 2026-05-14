@@ -5,29 +5,30 @@ export default defineSchema({
   attendees: defineTable({
     name: v.string(),
     role: v.string(),
-    experienceLevel: v.union(
-      v.literal("curious"),
-      v.literal("daily"),
-      v.literal("builder")
+    // New simplified field
+    interest: v.optional(v.string()),
+    interestBucket: v.optional(v.string()),
+    photoStorageId: v.optional(v.id("_storage")),
+    // Legacy fields — now optional so old + new flows coexist
+    experienceLevel: v.optional(
+      v.union(v.literal("curious"), v.literal("daily"), v.literal("builder"))
     ),
-    location: v.union(
-      v.literal("local"),
-      v.literal("visiting"),
-      v.literal("temporary"),
-      v.literal("considering")
+    location: v.optional(
+      v.union(
+        v.literal("local"),
+        v.literal("visiting"),
+        v.literal("temporary"),
+        v.literal("considering")
+      )
     ),
-    spicyTake1: v.union(
-      v.literal("agree"),
-      v.literal("disagree"),
-      v.literal("drink")
+    spicyTake1: v.optional(
+      v.union(v.literal("agree"), v.literal("disagree"), v.literal("drink"))
     ),
-    spicyTake2: v.union(
-      v.literal("obviously"),
-      v.literal("depends"),
-      v.literal("brave")
+    spicyTake2: v.optional(
+      v.union(v.literal("obviously"), v.literal("depends"), v.literal("brave"))
     ),
-    offer: v.string(),
-    need: v.string(),
+    offer: v.optional(v.string()),
+    need: v.optional(v.string()),
     confession: v.optional(v.string()),
   }),
 

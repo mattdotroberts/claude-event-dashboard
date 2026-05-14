@@ -13,7 +13,8 @@ type EventSlide =
   | { kind: 'speakerGrid'; title: string; speakers: Speaker[] }
   | { kind: 'speaker'; talkTitle: string; speaker: Speaker }
   | { kind: 'fullBleed'; image: string; alt: string }
-  | { kind: 'credits' };
+  | { kind: 'credits' }
+  | { kind: 'saveTheDate'; date: string; title: string; subtitle: string; };
 
 const SPLASH_LOGOS = [
   { src: '/logo-claude.svg', alt: 'Claude', className: 'splash-logo--claude' },
@@ -52,6 +53,12 @@ const EVENT_SLIDES: EventSlide[] = [
     speaker: s,
   })),
   { kind: 'credits' },
+  {
+    kind: 'saveTheDate',
+    date: 'June 10th',
+    title: 'Claude for Creativity',
+    subtitle: 'A design-focused community meetup',
+  },
 ];
 
 interface Props {
@@ -279,6 +286,17 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
               <img src="/logo-claude.svg" alt="Claude" />
             </div>
           </div>
+        </div>
+      );
+
+    case 'saveTheDate':
+      return (
+        <div className="es-std">
+          <div className="es-std__kicker">Save the Date</div>
+          <div className="es-std__date">{slide.date}</div>
+          <h1 className="es-std__title">{slide.title}</h1>
+          <p className="es-std__sub">{slide.subtitle}</p>
+          <div className="es-std__sparkle">✨</div>
         </div>
       );
   }

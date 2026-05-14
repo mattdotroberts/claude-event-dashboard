@@ -1,0 +1,50 @@
+.wc {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 24px;
+  padding: 24px;
+  overflow: hidden;
+  min-height: 0;
+  line-height: 1;
+}
+
+.wc--empty {
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+
+.wc__item {
+  font-family: 'Lora', serif;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+  animation: wcIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transition: transform 0.4s ease;
+}
+
+.wc__item:hover {
+  transform: scale(1.05);
+}
+
+.wc__count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.35em;
+  font-weight: 600;
+  opacity: 0.55;
+  letter-spacing: 1px;
+  position: relative;
+  top: -0.5em;
+}
+
+@keyframes wcIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
