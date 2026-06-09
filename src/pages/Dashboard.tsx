@@ -142,7 +142,7 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
         onWhatsUp={() => setShowWhatsUp(true)}
         onEventSlides={() => setShowEventSlides(true)}
       />
-      {showSplash && <SplashOverlay onClose={() => setShowSplash(false)} />}
+      {showSplash && <SplashOverlay config={config} onClose={() => setShowSplash(false)} />}
       {showWhatsUp && <WhatsUpClaude onClose={() => setShowWhatsUp(false)} />}
       {showEventSlides && <EventSlides config={config} onClose={() => setShowEventSlides(false)} />}
       {showCredits && (
@@ -151,10 +151,10 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
             <div className="credits-card__left">
               <div className="credits-card__party">🎉</div>
               <h2 className="credits-card__title">
-                Claude for Builders<br />in Barcelona
+                {config.title}<br />in {config.edition}
               </h2>
               <p className="credits-card__sub">
-                Sign up by May 20th to get $20 in free API credits to build with Claude.
+                Sign up to get free API credits to build with Claude.
               </p>
             </div>
             <div className="credits-card__right">
