@@ -125,6 +125,16 @@ export const designJun10: EventConfig = {
       ],
     },
     {
+      kind: 'people',
+      tag: 'Hosts',
+      title: 'Your hosts tonight',
+      people: [
+        { name: 'Vaishali Rajurkar', role: 'Lead Designer', photo: '/speakers/vaishali.jpeg' },
+        { name: 'Matt Roberts', role: 'Founder @ Happy Operators', photo: '/speakers/matt.jpg' },
+        { name: 'Jérémie Benhamou', role: 'Founder @ The Tech Nation', photo: '/speakers/jeremie.jpeg' },
+      ],
+    },
+    {
       kind: 'agenda',
       title: 'Tonight',
       items: [
