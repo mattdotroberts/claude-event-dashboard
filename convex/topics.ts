@@ -1,23 +1,41 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import type { QueryCtx } from "./_generated/server";
+import type { Id, Doc } from "./_generated/dataModel";
+import { resolveEvent, requireEvent } from "./events";
 
-const SEED_TOPICS = [
-  { emoji: "🏢", text: "AI for non-tech teams" },
-  { emoji: "⚖️", text: "EU AI regulation" },
-  { emoji: "💰", text: "AI business models" },
-  { emoji: "🔧", text: "MCP + tool use" },
-  { emoji: "🏛️", text: "Change management & governance for AI in the enterprise" },
-  { emoji: "⚖️", text: "AI & ethics" },
-];
+/**
+ * Topics for a given event. Pre-migration rows without eventId fall back to the
+ * whole table so a fresh deployment still renders.
+ */
+async function eventTopics(
+  ctx: QueryCtx,
+  eventId: Id<"events"> | undefined
+): Promise<Doc<"topics">[]> {
+  if (!eventId) return await ctx.db.query("topics").collect();
+  return await ctx.db
+    .query("topics")
+    .withIndex("by_event", (q) => q.eq("eventId", eventId))
+    .collect();
+}
 
+// Seed topics are passed in from the active event's code config
+// (src/data/events/<slug>.ts) — they differ per event. Seeds only once per event.
 export const seedTopics = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const existing = await ctx.db.query("topics").collect();
+  args: {
+    topics: v.optional(
+      v.array(v.object({ text: v.string(), emoji: v.optional(v.string()) }))
+    ),
+  },
+  handler: async (ctx, args) => {
+    const event = await requireEvent(ctx);
+    const existing = await eventTopics(ctx, event._id);
     if (existing.length > 0) return;
 
-    for (const topic of SEED_TOPICS) {
+    const seeds = args.topics ?? [];
+    for (const topic of seeds) {
       await ctx.db.insert("topics", {
+        eventId: event._id,
         text: topic.text,
         emoji: topic.emoji,
         isPreSeeded: true,
@@ -34,7 +52,9 @@ export const proposeTopic = mutation({
     attendeeId: v.id("attendees"),
   },
   handler: async (ctx, args) => {
+    const event = await requireEvent(ctx);
     const topicId = await ctx.db.insert("topics", {
+      eventId: event._id,
       text: args.text,
       isPreSeeded: false,
       proposedBy: args.attendeeId,
@@ -50,6 +70,7 @@ export const proposeTopic = mutation({
 
     if (existingVotes.length < 2) {
       await ctx.db.insert("topicVotes", {
+        eventId: event._id,
         topicId,
         attendeeId: args.attendeeId,
       });
@@ -103,7 +124,9 @@ export const vote = mutation({
       throw new Error("Maximum 2 votes allowed");
     }
 
+    const event = await requireEvent(ctx);
     await ctx.db.insert("topicVotes", {
+      eventId: event._id,
       topicId: args.topicId,
       attendeeId: args.attendeeId,
     });
@@ -128,20 +151,28 @@ export const unvote = mutation({
   },
 });
 
-// Returns approved topics (for dashboard and voting)
-export const getTopicsWithVotes = query({
-  args: {},
-  handler: async (ctx) => {
-    const topics = await ctx.db.query("topics").collect();
-    const allVotes = await ctx.db.query("topicVotes").collect();
+// Vote counts keyed by topicId, for a given set of topics.
+function countVotes(
+  topics: Doc<"topics">[],
+  allVotes: Doc<"topicVotes">[]
+): Map<string, number> {
+  const topicIds = new Set(topics.map((t) => t._id as string));
+  const counts = new Map<string, number>();
+  for (const vote of allVotes) {
+    if (!topicIds.has(vote.topicId as string)) continue;
+    counts.set(vote.topicId, (counts.get(vote.topicId) ?? 0) + 1);
+  }
+  return counts;
+}
 
-    const voteCounts = new Map<string, number>();
-    for (const vote of allVotes) {
-      voteCounts.set(
-        vote.topicId,
-        (voteCounts.get(vote.topicId) ?? 0) + 1
-      );
-    }
+// Returns approved topics for the active (or given) event — dashboard + voting.
+export const getTopicsWithVotes = query({
+  args: { slug: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    const event = await resolveEvent(ctx, args.slug);
+    const topics = await eventTopics(ctx, event?._id);
+    const allVotes = await ctx.db.query("topicVotes").collect();
+    const voteCounts = countVotes(topics, allVotes);
 
     const topicsWithVotes = topics
       .filter((t) => t.approved !== false) // treat missing approved as true (backward compat)
@@ -155,20 +186,14 @@ export const getTopicsWithVotes = query({
   },
 });
 
-// Returns ALL topics including pending (for admin + mobile proposer view)
+// Returns ALL topics including pending for the active event (admin + proposer view).
 export const getAllTopicsWithVotes = query({
-  args: {},
-  handler: async (ctx) => {
-    const topics = await ctx.db.query("topics").collect();
+  args: { slug: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    const event = await resolveEvent(ctx, args.slug);
+    const topics = await eventTopics(ctx, event?._id);
     const allVotes = await ctx.db.query("topicVotes").collect();
-
-    const voteCounts = new Map<string, number>();
-    for (const vote of allVotes) {
-      voteCounts.set(
-        vote.topicId,
-        (voteCounts.get(vote.topicId) ?? 0) + 1
-      );
-    }
+    const voteCounts = countVotes(topics, allVotes);
 
     const topicsWithVotes = topics.map((topic) => ({
       ...topic,
@@ -183,7 +208,9 @@ export const getAllTopicsWithVotes = query({
 export const addTopic = mutation({
   args: { text: v.string(), emoji: v.optional(v.string()) },
   handler: async (ctx, args) => {
+    const event = await requireEvent(ctx);
     return await ctx.db.insert("topics", {
+      eventId: event._id,
       text: args.text,
       emoji: args.emoji,
       isPreSeeded: true,
@@ -193,16 +220,21 @@ export const addTopic = mutation({
   },
 });
 
+// Clears topics + their votes for the ACTIVE event only — archives keep theirs.
 export const clearAll = mutation({
   args: {},
   handler: async (ctx) => {
-    const topics = await ctx.db.query("topics").collect();
+    const event = await resolveEvent(ctx);
+    const topics = await eventTopics(ctx, event?._id);
+    const topicIds = new Set(topics.map((t) => t._id as string));
     for (const t of topics) {
       await ctx.db.delete(t._id);
     }
     const votes = await ctx.db.query("topicVotes").collect();
-    for (const v of votes) {
-      await ctx.db.delete(v._id);
+    for (const vrow of votes) {
+      if (topicIds.has(vrow.topicId as string)) {
+        await ctx.db.delete(vrow._id);
+      }
     }
   },
 });

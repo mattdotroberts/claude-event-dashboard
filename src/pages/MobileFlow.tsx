@@ -6,25 +6,16 @@ import type { Id } from '../../convex/_generated/dataModel';
 import { QRCodeSVG } from 'qrcode.react';
 import { ClaudeCharacter } from '../components/ClaudeCharacter';
 import { EventHeader } from '../components/EventHeader';
+import { useEvent } from '../data/events/useEvent';
 import './MobileFlow.css';
 
 const STORAGE_KEY = 'claude-event-attendee-id';
 
-const SUGGESTIONS = [
-  'Agents in production',
-  'Evals',
-  'MCP',
-  'Claude Code',
-  'Voice',
-  'Shipping faster',
-  'Design with AI',
-  'Managed Agents',
-  'Regulation',
-];
-
 type Screen = 'name' | 'interest' | 'done';
 
 export function MobileFlow() {
+  const { config } = useEvent();
+  const SUGGESTIONS = config.interestSuggestions;
   const submitAttendee = useMutation(api.attendees.submitAttendee);
   const updateInterest = useMutation(api.attendees.updateAttendeeInterest);
   const generateUploadUrl = useMutation(api.attendees.generateUploadUrl);

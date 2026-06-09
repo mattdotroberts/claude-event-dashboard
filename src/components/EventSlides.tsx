@@ -1,114 +1,48 @@
 import { useState, useEffect, useCallback } from 'react';
-import { SPEAKERS, type Speaker } from '../data/speakers';
+import { useEvent } from '../data/events/useEvent';
+import type { EventConfig, TonightSlide, SlidePerson } from '../data/events';
 import './EventSlides.css';
-
-type EventSlide =
-  | {
-      kind: 'title';
-      date: string;
-      subtitle: string;
-      city: string;
-    }
-  | { kind: 'agenda'; title: string; items: { time?: string; label: string }[] }
-  | { kind: 'speakerGrid'; title: string; speakers: Speaker[] }
-  | { kind: 'speaker'; talkTitle: string; speaker: Speaker }
-  | { kind: 'fullBleed'; image: string; alt: string }
-  | { kind: 'credits' }
-  | { kind: 'saveTheDate'; date: string; title: string; subtitle: string; };
-
-const SPLASH_LOGOS = [
-  { src: '/logo-claude.svg', alt: 'Claude', className: 'splash-logo--claude' },
-  { src: '/logo-aisummit-full.svg', alt: 'AI Summit Barcelona', className: 'splash-logo--aisummit' },
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/WTCB_Logo.svg', alt: 'WTC Barcelona', className: 'splash-logo--wtcb' },
-  { src: '/logo-happy-operators.png', alt: 'Happy Operators', className: 'splash-logo--hapi', showName: true },
-];
-
-const EVENT_SLIDES: EventSlide[] = [
-  {
-    kind: 'title',
-    date: '14 May 2026',
-    subtitle: 'Claude Code for Builders #3',
-    city: 'Barcelona',
-  },
-  {
-    kind: 'agenda',
-    title: 'Agenda',
-    items: [
-      { time: '6.20pm', label: 'Opening Remarks' },
-      { time: '6.25pm', label: 'AI Summit giveaway 🎁' },
-      { time: '6.30pm', label: 'Community Talks' },
-      { time: '7.50pm', label: 'Anthropic giveaway 🎁' },
-      { time: '7.55pm', label: 'Next event preview 📣' },
-      { time: '8.00pm', label: 'Cheese, Wine and Razzamatazzing' },
-    ],
-  },
-  { kind: 'fullBleed', image: '/ai-summit-ticket.png', alt: 'Get a free ticket for AI Summit Barcelona' },
-  {
-    kind: 'speakerGrid',
-    title: 'Speakers',
-    speakers: SPEAKERS,
-  },
-  ...SPEAKERS.map<EventSlide>((s) => ({
-    kind: 'speaker' as const,
-    talkTitle: s.talkTitle,
-    speaker: s,
-  })),
-  { kind: 'credits' },
-  {
-    kind: 'saveTheDate',
-    date: 'June 10th',
-    title: 'Claude for Creativity',
-    subtitle: 'A design-focused community meetup',
-  },
-  { kind: 'fullBleed', image: '/ai-summit-ticket.png', alt: 'Get a free ticket for AI Summit Barcelona' },
-];
 
 interface Props {
   onClose: () => void;
+  /** Override the resolved event (e.g. for /prev archive views). */
+  config?: EventConfig;
 }
 
-export function EventSlides({ onClose }: Props) {
+export function EventSlides({ onClose, config }: Props) {
+  const resolved = useEvent();
+  const cfg = config ?? resolved.config;
+  const slides = cfg.tonightSlides ?? [{ kind: 'title' as const }];
+
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [lightbox, setLightbox] = useState<string | null>(null);
 
   const goNext = useCallback(() => {
-    if (currentSlide < EVENT_SLIDES.length - 1) {
-      setCurrentSlide((p) => p + 1);
-    }
-  }, [currentSlide]);
+    setCurrentSlide((p) => (p < slides.length - 1 ? p + 1 : p));
+  }, [slides.length]);
 
   const goPrev = useCallback(() => {
-    if (currentSlide > 0) {
-      setCurrentSlide((p) => p - 1);
-    }
-  }, [currentSlide]);
+    setCurrentSlide((p) => (p > 0 ? p - 1 : p));
+  }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (lightbox) {
-        if (e.key === 'Escape') setLightbox(null);
-        return;
-      }
       if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [goNext, goPrev, onClose, lightbox]);
+  }, [goNext, goPrev, onClose]);
 
-  const slide = EVENT_SLIDES[currentSlide];
+  const slide = slides[currentSlide];
 
   return (
     <div className="es-overlay" onClick={onClose}>
       <div className="es-container" onClick={(e) => e.stopPropagation()}>
-        {/* Close button */}
         <button className="es-close" onClick={onClose}>✕</button>
 
-        {/* Progress bar */}
         <div className="es-progress">
-          {EVENT_SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <div
               key={i}
               className={`es-progress__dot ${i === currentSlide ? 'es-progress__dot--active' : ''} ${i < currentSlide ? 'es-progress__dot--done' : ''}`}
@@ -117,7 +51,6 @@ export function EventSlides({ onClose }: Props) {
           ))}
         </div>
 
-        {/* Slide area with side nav */}
         <div className="es-slide-area">
           <button
             className="es-side-nav es-side-nav--prev"
@@ -128,46 +61,37 @@ export function EventSlides({ onClose }: Props) {
             ‹
           </button>
 
-          {/* Slide content */}
           <div className={`es-slide es-slide--${slide.kind}`} key={currentSlide}>
-            {renderSlide(slide, setLightbox)}
+            {renderSlide(slide, cfg)}
           </div>
 
           <button
             className="es-side-nav es-side-nav--next"
-            onClick={currentSlide < EVENT_SLIDES.length - 1 ? goNext : onClose}
-            aria-label={currentSlide < EVENT_SLIDES.length - 1 ? 'Next slide' : 'Close'}
+            onClick={currentSlide < slides.length - 1 ? goNext : onClose}
+            aria-label={currentSlide < slides.length - 1 ? 'Next slide' : 'Close'}
           >
             ›
           </button>
         </div>
 
-        {/* Counter */}
         <div className="es-counter">
-          {currentSlide + 1} / {EVENT_SLIDES.length}
+          {currentSlide + 1} / {slides.length}
         </div>
-
-        {/* Image lightbox */}
-        {lightbox && (
-          <div className="es-lightbox" onClick={() => setLightbox(null)}>
-            <img src={lightbox} alt="Full screen" className="es-lightbox__img" />
-          </div>
-        )}
       </div>
     </div>
   );
 }
 
-function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
+function renderSlide(slide: TonightSlide, cfg: EventConfig) {
   switch (slide.kind) {
     case 'title':
       return (
         <div className="es-title-splash">
           <div className="splash__content">
             <div className="splash__left">
-              <p className="splash__date">{slide.date}</p>
-              <h2 className="splash__subtitle">{slide.subtitle}</h2>
-              <h1 className="splash__city">{slide.city}</h1>
+              <p className="splash__date">{cfg.date}</p>
+              <h2 className="splash__subtitle">{cfg.title}</h2>
+              <h1 className="splash__city">{cfg.edition}</h1>
             </div>
             <div className="splash__right">
               <img src="/globe-braces.svg" alt="Globe" className="splash__globe-img" />
@@ -175,16 +99,13 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
           </div>
           <div className="splash__bottom">
             <div className="splash__hosted">
-              <p>Hosted by AI Summit Barcelona, WTC Barcelona</p>
-              <p>& Happy Operators</p>
+              <p>{cfg.hostedBy}</p>
             </div>
             <div className="splash__bottom-logos">
-              {SPLASH_LOGOS.map((logo) => (
-                <div key={logo.alt} className={`splash-logo-item ${logo.className}`}>
-                  <img src={logo.src} alt={logo.alt} className="splash-logo" />
-                  {'showName' in logo && logo.showName && (
-                    <span className="splash-logo__name">{logo.alt}</span>
-                  )}
+              {cfg.logos.map((logo) => (
+                <div key={logo.url} className={`splash-logo-item ${logo.className}`}>
+                  <img src={logo.src} alt={logo.name || logo.className} className="splash-logo" />
+                  {logo.name && <span className="splash-logo__name">{logo.name}</span>}
                 </div>
               ))}
             </div>
@@ -195,7 +116,7 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
     case 'agenda':
       return (
         <div className="es-slide__text es-agenda-wrap">
-          <h1 className="es-slide__title">{slide.title}</h1>
+          <h1 className="es-slide__title">{slide.title ?? 'Tonight'}</h1>
           <ul className="es-agenda">
             {slide.items.map((item, i) => (
               <li
@@ -211,83 +132,34 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
         </div>
       );
 
-    case 'speakerGrid':
+    case 'people':
       return (
         <div className="es-slide__text es-grid-wrap">
+          <span className="es-slide__tag">{slide.tag}</span>
           <h1 className="es-slide__title">{slide.title}</h1>
-          <div className="es-grid">
-            {slide.speakers.map((s, i) => (
-              <div
-                key={i}
-                className="es-grid__cell"
-                style={{ animationDelay: `${i * 0.1}s` }}
-                onClick={() => openLightbox(s.photo)}
-              >
-                <div className="es-grid__photo-wrap">
-                  <img src={s.photo} alt={s.name} className="es-grid__photo" />
-                </div>
-                <div className="es-grid__name">{s.name}</div>
-                <div className="es-grid__position">{s.position}</div>
-              </div>
+          <div className="es-grid es-grid--people">
+            {slide.people.map((p, i) => (
+              <PersonCell key={i} person={p} index={i} />
             ))}
           </div>
         </div>
       );
 
-    case 'speaker':
+    case 'demosCta':
       return (
-        <>
-          <div className="es-slide__text">
-            <span className="es-slide__tag">Speaker</span>
-            <h1 className="es-slide__title">{slide.talkTitle}</h1>
-            <div className="es-speaker__meta">
-              <div className="es-speaker__name">{slide.speaker.name}</div>
-              <div className="es-speaker__position">{slide.speaker.position}</div>
-            </div>
-          </div>
-          <div
-            className="es-speaker__photo-wrap"
-            onClick={() => openLightbox(slide.speaker.photo)}
-          >
-            <img
-              src={slide.speaker.photo}
-              alt={slide.speaker.name}
-              className="es-speaker__photo"
-            />
-          </div>
-        </>
-      );
-
-    case 'fullBleed':
-      return (
-        <div
-          className="es-fullbleed"
-          onClick={() => openLightbox(slide.image)}
-        >
-          <img src={slide.image} alt={slide.alt} className="es-fullbleed__img" />
+        <div className="es-cta">
+          <div className="es-cta__emoji">🎨</div>
+          <h1 className="es-cta__title">{slide.title}</h1>
+          <p className="es-cta__sub">{slide.subtitle}</p>
         </div>
       );
 
-    case 'credits':
+    case 'votePrizes':
       return (
-        <div className="es-credits-wrap">
-          <div className="credits-card credits-card--in-deck">
-            <div className="credits-card__left">
-              <div className="credits-card__party">🎉</div>
-              <h2 className="credits-card__title">
-                Claude for Builders<br />in Barcelona
-              </h2>
-              <p className="credits-card__sub">
-                Sign up by May 20th to get $20 in free API credits to build with Claude.
-              </p>
-            </div>
-            <div className="credits-card__right">
-              <img src="/credits-qr.png" alt="Scan to redeem" className="credits-card__qr" />
-            </div>
-            <div className="credits-card__logo">
-              <img src="/logo-claude.svg" alt="Claude" />
-            </div>
-          </div>
+        <div className="es-cta">
+          <div className="es-cta__emoji">🏆</div>
+          <h1 className="es-cta__title">{slide.title}</h1>
+          <p className="es-cta__sub">{slide.subtitle}</p>
         </div>
       );
 
@@ -302,4 +174,27 @@ function renderSlide(slide: EventSlide, openLightbox: (src: string) => void) {
         </div>
       );
   }
+}
+
+function PersonCell({ person, index }: { person: SlidePerson; index: number }) {
+  const initials = person.name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+  return (
+    <div className="es-grid__cell" style={{ animationDelay: `${index * 0.1}s` }}>
+      <div className="es-grid__photo-wrap">
+        {person.photo ? (
+          <img src={person.photo} alt={person.name} className="es-grid__photo" />
+        ) : (
+          <div className="es-grid__photo es-grid__photo--initials">{initials}</div>
+        )}
+      </div>
+      <div className="es-grid__name">{person.name}</div>
+      {person.role && <div className="es-grid__position">{person.role}</div>}
+    </div>
+  );
 }

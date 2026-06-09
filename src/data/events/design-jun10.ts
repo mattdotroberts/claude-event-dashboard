@@ -1,0 +1,186 @@
+import type { EventConfig } from "./types";
+import type { Speaker } from "../speakers";
+
+/**
+ * Panel + host for the design event. Sourced from the shared event doc.
+ * These render on the host-notes /speakers page.
+ */
+const DESIGN_SPEAKERS: Speaker[] = [
+  {
+    name: "Marc Ustrell",
+    position: "Staff Content Designer at Qonto",
+    photo: "/speakers/placeholder.svg",
+    talkTitle: "Panel — Where Claude fits in creative work",
+    time: "18:25 (panel)",
+    bio: "Marc is a Staff Content Designer at Qonto, Europe's leading finance solution for SMEs and freelancers. Background in UX writing, localization, and content systems. He builds Claude-powered tools in production, from localization automation to internal web apps.",
+    funFact: "Believes designers who thrive with AI are the ones who understand their own systems first.",
+    questions: [
+      {
+        group: "Panel angle",
+        items: [
+          "How do you build Claude into a production design/content workflow without losing craft?",
+          "What does 'understand your own systems first' look like in practice for a designer?",
+        ],
+      },
+    ],
+  },
+  {
+    name: "Alicia Comella",
+    position: "Design Lead at Perk (AI-native travel)",
+    photo: "/speakers/placeholder.svg",
+    talkTitle: "Panel — Where Claude fits in creative work",
+    time: "18:25 (panel)",
+    bio: "Alicia leads the travel design organisation at Perk, guiding a transformation toward an AI-native travel experience. Previously ran a London design studio delivering digital products for Arup, Intel, and Oxford University, then led design at Wallbox and The Knot Worldwide. Originally from Barcelona, with experience across the UK, Germany, and Spain.",
+    funFact: "Helps business travellers focus on the trip, not the logistics.",
+    questions: [
+      {
+        group: "Panel angle",
+        items: [
+          "How does AI change both the product and the design practice at the same time?",
+          "What did moving from a studio to leading AI-native design teach you?",
+        ],
+      },
+    ],
+  },
+  {
+    name: "Linus Ekenstam",
+    position: "Founder, FloCurve · Panel Host",
+    photo: "/speakers/placeholder.svg",
+    talkTitle: "Panel Host",
+    time: "18:25 (panel host)",
+    bio: "Product designer turned serial founder with 18 years building digital products for Typeform, Flodesk, and Thingtesting. Currently building FloCurve, an AI agent that finds high-intent leads on LinkedIn. AI evangelist and stage host; has collaborated with Meta and Google and spoken at Mobile World Congress, Imagine AI Live, and Upscale Conf. Serial founder of BedtimeStory.ai, Sensive, and Copygram.",
+    funFact: "42% reply rates, 60 seconds from URL to live campaign, 10,000+ leads found with FloCurve.",
+    questions: [
+      {
+        group: "Host prompts",
+        items: [
+          "Where does Claude augment humans while preserving what makes us uniquely human?",
+          "What separates designers who thrive with AI from those who stall?",
+        ],
+      },
+    ],
+  },
+];
+
+/**
+ * The active event — "Claude for Design & Creativity", Barcelona, 10 June 2026.
+ * El Raval, Barcelona. Hosts: Olivier Alter, Jeremie Benhamou, Matt Roberts,
+ * Vaishali Rajurkar. Runs the demo directory + voting.
+ */
+export const designJun10: EventConfig = {
+  slug: "design-jun10",
+  title: "Claude for Design & Creativity",
+  edition: "Barcelona",
+  date: "10 June 2026",
+  hostedBy: "Hosted by Claude Community · Olivier Alter, Jeremie Benhamou, Matt Roberts & Vaishali Rajurkar",
+  logos: [
+    { src: "/logo-claude.svg", name: "", url: "https://claude.ai", className: "header-logo--claude" },
+    { src: "/logo-happy-operators.png", name: "Happy Operators", url: "https://www.happyoperators.com/community", className: "header-logo--hapi" },
+  ],
+  seedTopics: [
+    { emoji: "🎨", text: "Claude for branding & identity" },
+    { emoji: "✍️", text: "AI in the creative process vs. the output" },
+    { emoji: "🧰", text: "Design tools & workflows with Claude" },
+    { emoji: "🖼️", text: "Taste, craft & the role of the designer" },
+    { emoji: "🚀", text: "Going from idea to polished design fast" },
+    { emoji: "🤝", text: "Designers + developers + AI" },
+  ],
+  interestSuggestions: [
+    "Branding with AI",
+    "Design systems",
+    "Creative workflows",
+    "Claude for design",
+    "Typography",
+    "Prototyping fast",
+    "Taste & craft",
+    "Design + code",
+    "Content design",
+  ],
+  targetAttendees: 80,
+  demosEnabled: true,
+  tonightSlides: [
+    { kind: 'title' },
+    {
+      kind: 'people',
+      tag: 'Host',
+      title: 'Your host tonight',
+      people: [
+        { name: 'Vaishali Rajurkar', role: 'Lead Designer', photo: '/speakers/vaishali.jpeg' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Host',
+      title: 'Your host tonight',
+      people: [
+        { name: 'Jérémie Benhamou', role: 'Founder @ The Tech Nation', photo: '/speakers/jeremie.jpeg' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Host',
+      title: 'Your host tonight',
+      people: [
+        { name: 'Matt Roberts', role: 'Founder @ Happy Operators', photo: '/speakers/matt.jpg' },
+      ],
+    },
+    {
+      kind: 'agenda',
+      title: 'Tonight',
+      items: [
+        { time: '6.00pm', label: 'Doors, drinks, cheese & arrivals' },
+        { time: '6.15pm', label: 'Welcome & Claude Community intro' },
+        { time: '6.25pm', label: 'Panel: where Claude fits in creative work' },
+        { time: '7.05pm', label: 'Talk: How to not make AI Slop' },
+        { time: '7.35pm', label: 'Community demos — 3-min show & tell' },
+        { time: '8.15pm', label: 'Voting, prizes, Q&A & open discussion' },
+        { time: '8.45pm', label: 'Wrap, group photo & mingling' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Panel',
+      title: 'Where Claude fits in creative work',
+      people: [
+        { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
+        { name: 'Marc Ustrell Hernandez', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
+        { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
+        { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Talk',
+      title: 'How to not make AI Slop',
+      people: [
+        { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
+        { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
+      ],
+    },
+    {
+      kind: 'demosCta',
+      title: 'Show us what you built',
+      subtitle: 'Submit your project at /demos — it goes straight on the board.',
+    },
+    {
+      kind: 'votePrizes',
+      title: 'Vote for your favourites',
+      subtitle: 'You get 3 votes. Top demo wins a prize. 🏆',
+    },
+  ],
+  speakers: DESIGN_SPEAKERS,
+  runOfShow: {
+    venue: "El Raval, Barcelona (address visible to approved guests on Luma)",
+    format: "Panel + tactical talk + community demos + voting",
+    schedule: [
+      { time: "18:00", activity: "Doors, drinks, cheese, and arrivals" },
+      { time: "18:15", activity: "Welcome, Claude Community intro, and house notes" },
+      { time: "18:25", activity: "Panel: where Claude fits in creative work", highlight: true },
+      { time: "19:05", activity: "Tactical branding/design talk with examples", highlight: true },
+      { time: "19:35", activity: "Community bullet demos: three-minute show-and-tell", highlight: true },
+      { time: "20:15", activity: "Voting, prizes, Q&A, and open discussion", hard: true },
+      { time: "20:45", activity: "Wrap, future speaker invite, group photo, mingling" },
+      { time: "21:00", activity: "Close", hard: true },
+    ],
+  },
+};

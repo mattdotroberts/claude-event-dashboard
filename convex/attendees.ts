@@ -1,6 +1,26 @@
 import { v } from "convex/values";
 import { mutation, query, internalMutation } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { resolveEvent, requireEvent } from "./events";
+import type { QueryCtx } from "./_generated/server";
+import type { Id, Doc } from "./_generated/dataModel";
+
+/**
+ * Attendees for a given event. If eventId is undefined (no event resolved yet),
+ * fall back to ALL attendees so a pre-migration / fresh deployment still works.
+ * Rows that predate the migration and lack eventId are treated as belonging to
+ * the active event.
+ */
+async function eventAttendees(
+  ctx: QueryCtx,
+  eventId: Id<"events"> | undefined
+): Promise<Doc<"attendees">[]> {
+  if (!eventId) return await ctx.db.query("attendees").collect();
+  return await ctx.db
+    .query("attendees")
+    .withIndex("by_event", (q) => q.eq("eventId", eventId))
+    .collect();
+}
 
 export const submitAttendee = mutation({
   args: {
@@ -9,7 +29,9 @@ export const submitAttendee = mutation({
     interest: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const event = await requireEvent(ctx);
     const id = await ctx.db.insert("attendees", {
+      eventId: event._id,
       name: args.name,
       role: args.role,
       interest: args.interest,
@@ -112,9 +134,10 @@ export const getById = query({
 });
 
 export const getAll = query({
-  args: {},
-  handler: async (ctx) => {
-    const attendees = await ctx.db.query("attendees").collect();
+  args: { slug: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    const event = await resolveEvent(ctx, args.slug);
+    const attendees = await eventAttendees(ctx, event?._id);
     // Resolve photo URLs for any attendees that have a stored photo
     return await Promise.all(
       attendees.map(async (a) => {
@@ -150,9 +173,10 @@ export const setPhoto = mutation({
 });
 
 export const getCount = query({
-  args: {},
-  handler: async (ctx) => {
-    const attendees = await ctx.db.query("attendees").collect();
+  args: { slug: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    const event = await resolveEvent(ctx, args.slug);
+    const attendees = await eventAttendees(ctx, event?._id);
     return attendees.length;
   },
 });
@@ -164,10 +188,12 @@ export const deleteAttendee = mutation({
   },
 });
 
+// Clears attendees for the ACTIVE event only — archived events keep their data.
 export const clearAll = mutation({
   args: {},
   handler: async (ctx) => {
-    const attendees = await ctx.db.query("attendees").collect();
+    const event = await resolveEvent(ctx);
+    const attendees = await eventAttendees(ctx, event?._id);
     for (const a of attendees) {
       await ctx.db.delete(a._id);
     }
@@ -175,10 +201,17 @@ export const clearAll = mutation({
 });
 
 export const getRecent = query({
-  args: { limit: v.optional(v.number()) },
+  args: { limit: v.optional(v.number()), slug: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 10;
-    const attendees = await ctx.db.query("attendees").order("desc").take(limit);
-    return attendees;
+    const event = await resolveEvent(ctx, args.slug);
+    if (!event?._id) {
+      return await ctx.db.query("attendees").order("desc").take(limit);
+    }
+    return await ctx.db
+      .query("attendees")
+      .withIndex("by_event", (q) => q.eq("eventId", event._id))
+      .order("desc")
+      .take(limit);
   },
 });

@@ -13,7 +13,7 @@ const GROUP_COLORS = [
 ];
 
 export function Groups() {
-  const topics = useQuery(api.topics.getTopicsWithVotes) ?? [];
+  const topics = useQuery(api.topics.getTopicsWithVotes, {}) ?? [];
   const topTopics = topics.slice(0, 5);
 
   return (

@@ -583,3 +583,93 @@
   .es-agenda__label { font-size: 22px; }
   .es-agenda__time { font-size: 16px; }
 }
+
+/* ===== Tonight deck: CTA slides (demos / vote-prizes) ===== */
+.es-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  gap: 18px;
+  padding: 40px;
+}
+.es-cta__emoji {
+  font-size: 96px;
+  line-height: 1;
+  animation: es-cta-pop 0.5s cubic-bezier(0.2, 1.2, 0.4, 1) both;
+}
+@keyframes es-cta-pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.es-cta__title {
+  font-family: 'Lora', serif;
+  font-size: 64px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.05;
+  max-width: 14ch;
+}
+.es-cta__sub {
+  font-size: 26px;
+  opacity: 0.7;
+  margin: 0;
+  max-width: 22ch;
+}
+
+/* Initials fallback when a person has no photo */
+.es-grid__photo--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lora', serif;
+  font-size: 72px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* People grid (panel/talk/host) — flex so it adapts to person count:
+   1 person centers, 4 spread evenly, longer roles don't clip. */
+.es-grid--people {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 28px 48px;
+}
+.es-grid--people .es-grid__cell {
+  align-items: center;
+  text-align: center;
+  flex: 0 1 200px;
+  max-width: 220px;
+}
+/* Smaller, consistent avatars so 4-across fits on one row without clipping */
+.es-grid--people .es-grid__photo-wrap {
+  width: 150px;
+  height: 150px;
+}
+.es-grid--people .es-grid__name {
+  font-size: 22px;
+  margin-top: 14px;
+}
+.es-grid--people .es-grid__position {
+  font-size: 15px;
+}
+.es-grid--people .es-grid__photo--initials {
+  font-size: 44px;
+}
+/* A lone host/speaker reads as a hero — give it room */
+.es-grid--people .es-grid__cell:only-child {
+  flex-basis: 360px;
+  max-width: 420px;
+}
+.es-grid--people .es-grid__cell:only-child .es-grid__photo-wrap {
+  width: 240px;
+  height: 240px;
+}
+.es-grid--people .es-grid__cell:only-child .es-grid__name {
+  font-size: 32px;
+}

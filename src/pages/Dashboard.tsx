@@ -12,9 +12,9 @@ import { EventSlides } from '../components/EventSlides';
 import { WordCloud } from '../components/WordCloud';
 import { InterestStream } from '../components/InterestStream';
 import { RoomCanvas } from '../components/RoomCanvas';
+import { useEvent } from '../data/events/useEvent';
 import './Dashboard.css';
 
-const TARGET_ATTENDEES = 200;
 const MOBILE_URL = typeof window !== 'undefined' ? `${window.location.origin}/join` : '/join';
 
 const SPEECH_MESSAGES = [
@@ -25,13 +25,25 @@ const SPEECH_MESSAGES = [
   "Tell us what you want to talk about",
 ];
 
-export function Dashboard() {
-  const attendees = useQuery(api.attendees.getAll) ?? [];
-  const topics = useQuery(api.topics.getTopicsWithVotes) ?? [];
-  const recentAttendees = useQuery(api.attendees.getRecent, { limit: 20 }) ?? [];
+export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
+  const { config, isArchived } = useEvent(archiveSlug);
+  const TARGET_ATTENDEES = config.targetAttendees;
+  const slugArg = archiveSlug ? { slug: archiveSlug } : {};
+
+  const attendees = useQuery(api.attendees.getAll, slugArg) ?? [];
+  const topics = useQuery(api.topics.getTopicsWithVotes, slugArg) ?? [];
+  const recentAttendees = useQuery(api.attendees.getRecent, { limit: 20, ...slugArg }) ?? [];
+  const demosData = useQuery(
+    api.demos.getDemos,
+    config.demosEnabled ? slugArg : 'skip'
+  );
+  const demos = demosData?.demos ?? [];
   const seedTopics = useMutation(api.topics.seedTopics);
 
-  useEffect(() => { seedTopics(); }, []);
+  // Seed the active event's topics once (never seed an archived view).
+  useEffect(() => {
+    if (!isArchived) seedTopics({ topics: config.seedTopics });
+  }, [isArchived, config.slug]);
 
   const count = attendees.length;
   const pct = Math.round((count / TARGET_ATTENDEES) * 100);
@@ -88,9 +100,9 @@ export function Dashboard() {
   const [showEventSlides, setShowEventSlides] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
 
-  // Page carousel
-  const PAGE_COUNT = 3;
-  type Page = 0 | 1 | 2;
+  // Page carousel — demo leaderboard adds a 4th page when demos are enabled.
+  type Page = number;
+  const PAGE_COUNT = config.demosEnabled ? 4 : 3;
   const [page, setPage] = useState<Page>(0);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -125,13 +137,14 @@ export function Dashboard() {
   return (
     <div className="dashboard">
       <EventHeader
+        config={config}
         onTitleClick={() => setShowSplash(true)}
         onWhatsUp={() => setShowWhatsUp(true)}
         onEventSlides={() => setShowEventSlides(true)}
       />
       {showSplash && <SplashOverlay onClose={() => setShowSplash(false)} />}
       {showWhatsUp && <WhatsUpClaude onClose={() => setShowWhatsUp(false)} />}
-      {showEventSlides && <EventSlides onClose={() => setShowEventSlides(false)} />}
+      {showEventSlides && <EventSlides config={config} onClose={() => setShowEventSlides(false)} />}
       {showCredits && (
         <div className="credits-overlay" onClick={() => setShowCredits(false)}>
           <div className="credits-card" onClick={(e) => e.stopPropagation()}>
@@ -236,6 +249,19 @@ export function Dashboard() {
               <RoomCanvas people={roomPeople} />
             </div>
           </section>
+
+          {/* ================= PAGE 4: Demo leaderboard ================= */}
+          {config.demosEnabled && (
+            <section className="dashboard__page dashboard__grid dashboard__grid--leaderboard">
+              <div className="panel panel--leaderboard">
+                <div className="panel__header">
+                  <span className="panel__label">TOP DEMOS</span>
+                  <span className="live-badge"><span className="live-dot" /> Live</span>
+                </div>
+                <DemoLeaderboard demos={demos} />
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Pager dots */}
@@ -336,6 +362,57 @@ function SpeechBubble({ count }: { count: number }) {
   return (
     <div className="speech-bubble" key={msgIdx}>
       {msg}
+    </div>
+  );
+}
+
+type LeaderboardDemo = {
+  _id: string;
+  projectName: string;
+  ogTitle: string | null;
+  tagline: string | null;
+  builderName: string;
+  imageUrl: string | null;
+  avatarUrl: string | null;
+  voteCount: number;
+};
+
+function DemoLeaderboard({ demos }: { demos: LeaderboardDemo[] }) {
+  if (demos.length === 0) {
+    return (
+      <div className="leaderboard__empty">
+        <span className="leaderboard__empty-emoji">🎨</span>
+        <p>No demos yet. Scan to submit yours at <strong>/demos</strong>.</p>
+      </div>
+    );
+  }
+  const medals = ['🥇', '🥈', '🥉'];
+  const ranked = [...demos].sort((a, b) => b.voteCount - a.voteCount);
+  return (
+    <div className="leaderboard">
+      {ranked.slice(0, 8).map((d, i) => {
+        const title = d.projectName || d.ogTitle || 'Untitled';
+        return (
+          <div className={`leaderboard__row ${i === 0 ? 'is-leader' : ''}`} key={d._id}>
+            <span className="leaderboard__rank">{medals[i] ?? `#${i + 1}`}</span>
+            <div className="leaderboard__media">
+              {d.imageUrl ? (
+                <img src={d.imageUrl} alt={title} />
+              ) : (
+                <span className="leaderboard__media-fallback">🎨</span>
+              )}
+            </div>
+            <div className="leaderboard__info">
+              <span className="leaderboard__name">{title}</span>
+              <span className="leaderboard__builder">{d.builderName}</span>
+            </div>
+            <span className="leaderboard__votes">
+              <span className="leaderboard__votes-num">{d.voteCount}</span>
+              <span className="leaderboard__votes-label">{d.voteCount === 1 ? 'vote' : 'votes'}</span>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
