@@ -157,7 +157,7 @@ export const designJun10: EventConfig = {
       ],
       subtitle: 'Community, Events, Education, Memes',
       stats: [
-        { value: '460+', label: 'Community members', sub: 'Active builders across Barcelona & beyond' },
+        { value: '500+', label: 'Community members', sub: 'Active builders across Barcelona & beyond' },
         { value: '413', label: 'Messages per week', sub: 'From 320+ active members' },
         { value: '24', label: 'Events run', sub: '1200+ total attendees, ~50 per event' },
       ],

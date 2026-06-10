@@ -904,19 +904,40 @@
 /* ===== Full-bleed partner slide — cover the whole overlay, edge to edge =====
    The card escapes the container/slide padding via position:fixed so it reaches
    every screen edge. Nav arrows + progress sit above it so the deck still works. */
-.es-slide--partner { padding: 0; overflow: visible; }
-.es-slide--partner .es-partner {
+/* Full-bleed slides (partner + image) cover the whole overlay edge to edge.
+   They must NOT run the parent translateX slide-in (that caused the jolt) —
+   the fixed panel does its own smooth fade instead. */
+.es-slide--partner,
+.es-slide--image {
+  padding: 0;
+  overflow: visible;
+  animation: none;
+}
+.es-slide--partner .es-partner,
+.es-slide--image .es-image-slide {
   position: fixed;
   inset: 0;
   max-width: none;
   width: 100%;
   height: 100%;
+  margin: 0;
+  z-index: 1;
+  animation: esFadeIn 0.35s ease both;
+}
+.es-slide--partner .es-partner {
   border-radius: 0;
   box-shadow: none;
-  margin: 0;
   padding: 72px clamp(64px, 9vw, 140px);
   justify-content: center;
-  z-index: 1;
+}
+.es-slide--image .es-image-slide {
+  background: #D97757;
+  padding: 0;
+}
+.es-slide--image .es-image-slide__img {
+  max-width: 100vw;
+  max-height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
 }
 .es-side-nav, .es-close, .es-progress { z-index: 3; }
-.es-slide--partner ~ * .es-side-nav { color: rgba(255,255,255,0.6); }
