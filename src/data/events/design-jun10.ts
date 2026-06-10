@@ -141,26 +141,6 @@ export const designJun10: EventConfig = {
     },
     {
       kind: 'people',
-      tag: 'Talk',
-      title: 'Your AI looks like everyone else’s',
-      people: [
-        { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
-        { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
-      ],
-    },
-    {
-      kind: 'people',
-      tag: 'Panel',
-      title: 'Taste, Art & Tools',
-      people: [
-        { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
-        { name: 'Marc Ustrell', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
-        { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
-        { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
-      ],
-    },
-    {
-      kind: 'people',
       tag: 'Hosts',
       title: 'Your hosts tonight',
       people: [
@@ -220,6 +200,26 @@ export const designJun10: EventConfig = {
       title: 'Your host tonight',
       people: [
         { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Talk',
+      title: 'Your AI looks like everyone else’s',
+      people: [
+        { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
+        { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Panel',
+      title: 'Taste, Art & Tools',
+      people: [
+        { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
+        { name: 'Marc Ustrell', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
+        { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
+        { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
       ],
     },
     {
