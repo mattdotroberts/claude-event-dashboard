@@ -1,5 +1,6 @@
 .demos {
   min-height: 100vh;
+  min-height: 100dvh; /* iOS: account for the dynamic Safari toolbar */
   background: var(--bg);
   color: var(--text-primary);
   padding-bottom: 80px;
@@ -62,8 +63,14 @@
 
 .demos__hero-right {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.demos__controls {
+  display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 .demos__sort {
   display: flex;
@@ -443,5 +450,10 @@
 
 @media (max-width: 640px) {
   .demos__hero { flex-direction: column; align-items: stretch; }
-  .demos__hero-right { justify-content: space-between; }
+  .demos__hero-right { align-items: stretch; }
+  /* Submit on its own full-width line above the controls */
+  .demos__hero-right .demos__submit-btn { width: 100%; }
+  .demos__controls { justify-content: space-between; }
+  .demos__sort { flex: 1; }
+  .demos__sort-btn { flex: 1; text-align: center; }
 }

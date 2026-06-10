@@ -21,8 +21,7 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
-  min-height: 100%;
+html, body {
   width: 100%;
 }
 
@@ -31,8 +30,14 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
-  /* No global overflow lock — pages scroll normally. The dashboard opts into
-     its own fixed full-screen (height:100vh; overflow:hidden) in Dashboard.css. */
+  /* No global height/overflow lock — pages scroll normally (incl. iOS Safari).
+     The dashboard opts into its own fixed full-screen (100vh/overflow:hidden)
+     via the .dashboard container in Dashboard.css. */
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 input, textarea, button {

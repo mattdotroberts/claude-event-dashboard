@@ -70,29 +70,32 @@ export function Demos() {
           </p>
         </div>
         <div className="demos__hero-right">
-          {rawDemos.length > 1 && (
-            <div className="demos__sort" role="group" aria-label="Sort demos">
-              <button
-                className={`demos__sort-btn ${sortMode === 'random' ? 'is-active' : ''}`}
-                onClick={() => setSortMode('random')}
-              >
-                🔀 Random
-              </button>
-              <button
-                className={`demos__sort-btn ${sortMode === 'votes' ? 'is-active' : ''}`}
-                onClick={() => setSortMode('votes')}
-              >
-                🏆 Most votes
-              </button>
-            </div>
-          )}
-          <div className="demos__votes-left">
-            <span className="demos__votes-num">{votesLeft}</span>
-            <span className="demos__votes-label">votes left</span>
-          </div>
+          {/* Submit gets its own full-width row above the controls */}
           <button className="demos__submit-btn" onClick={() => setShowSubmit(true)}>
             + Submit your project
           </button>
+          <div className="demos__controls">
+            {rawDemos.length > 1 && (
+              <div className="demos__sort" role="group" aria-label="Sort demos">
+                <button
+                  className={`demos__sort-btn ${sortMode === 'random' ? 'is-active' : ''}`}
+                  onClick={() => setSortMode('random')}
+                >
+                  🔀 Random
+                </button>
+                <button
+                  className={`demos__sort-btn ${sortMode === 'votes' ? 'is-active' : ''}`}
+                  onClick={() => setSortMode('votes')}
+                >
+                  🏆 Most votes
+                </button>
+              </div>
+            )}
+            <div className="demos__votes-left">
+              <span className="demos__votes-num">{votesLeft}</span>
+              <span className="demos__votes-label">votes left</span>
+            </div>
+          </div>
         </div>
       </div>
 
