@@ -45,7 +45,7 @@ const DESIGN_SPEAKERS: Speaker[] = [
     ],
   },
   {
-    name: "Marc Ustrell Hernandez",
+    name: "Marc Ustrell",
     position: "Staff Content Designer @ Qonto",
     photo: "/speakers/marc.jpeg",
     talkTitle: "Panel — Taste, Art & Tools",
@@ -208,7 +208,7 @@ export const designJun10: EventConfig = {
       title: 'Taste, Art & Tools',
       people: [
         { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
-        { name: 'Marc Ustrell Hernandez', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
+        { name: 'Marc Ustrell', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
         { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
         { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
       ],
