@@ -75,6 +75,13 @@ export const designJun10: EventConfig = {
   hostedBy: "Hosted by Claude Community · Olivier Alter, Jeremie Benhamou, Matt Roberts & Vaishali Rajurkar",
   logos: [
     { src: "/logo-claude.svg", name: "", url: "https://claude.ai", className: "header-logo--claude" },
+    { src: "/logo-aisummit-full.svg", name: "", url: "https://aisummitbarcelona.com", className: "header-logo--aisummit" },
+    {
+      src: "https://upload.wikimedia.org/wikipedia/commons/c/c4/WTCB_Logo.svg",
+      name: "WTC Barcelona",
+      url: "https://www.wtcbarcelona.com",
+      className: "header-logo--wtcb",
+    },
     { src: "/logo-happy-operators.png", name: "Happy Operators", url: "https://www.happyoperators.com/community", className: "header-logo--hapi" },
   ],
   seedTopics: [
