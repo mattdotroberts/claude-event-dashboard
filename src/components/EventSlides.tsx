@@ -173,25 +173,48 @@ function renderSlide(slide: TonightSlide, cfg: EventConfig) {
     case 'partner':
       return (
         <div className="es-partner">
-          <div className="es-partner__left">
-            <div className="es-partner__brand">{slide.brand}</div>
-            {slide.kicker && <p className="es-partner__kicker">{slide.kicker}</p>}
-            <h1 className="es-partner__title">
-              {slide.titleLines.map((l, i) => (
-                <span key={i} className={l.accent ? 'es-partner__accent' : undefined}>
-                  {l.text}{' '}
-                </span>
-              ))}
-            </h1>
-            {slide.subtitle && <p className="es-partner__sub">{slide.subtitle}</p>}
-            {slide.footer && <div className="es-partner__footer">{slide.footer}</div>}
-          </div>
-          {slide.qr && (
-            <div className="es-partner__right">
-              <div className="es-partner__qr">
-                <img src={slide.qr} alt="Scan" />
+          <div className="es-partner__main">
+            <div className="es-partner__left">
+              <div className="es-partner__brand">{slide.brand}</div>
+              {slide.kicker && <p className="es-partner__kicker">{slide.kicker}</p>}
+              <h1 className="es-partner__title">
+                {slide.titleLines.map((l, i) => (
+                  <span key={i} className={l.accent ? 'es-partner__accent' : undefined}>
+                    {l.text}{' '}
+                  </span>
+                ))}
+              </h1>
+              {slide.subtitle && <p className="es-partner__sub">{slide.subtitle}</p>}
+              {slide.stats && slide.stats.length > 0 && (
+                <div className="es-partner__stats">
+                  {slide.stats.map((s, i) => (
+                    <div className="es-partner__stat" key={i}>
+                      <span className="es-partner__stat-value">{s.value}</span>
+                      <span className="es-partner__stat-label">{s.label}</span>
+                      {s.sub && <span className="es-partner__stat-sub">{s.sub}</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {slide.footer && <div className="es-partner__footer">{slide.footer}</div>}
+            </div>
+            {slide.qr && (
+              <div className="es-partner__right">
+                <div className="es-partner__qr">
+                  <img src={slide.qr} alt="Scan" />
+                </div>
+                {slide.qrCaption && <p className="es-partner__qr-cap">{slide.qrCaption}</p>}
               </div>
-              {slide.qrCaption && <p className="es-partner__qr-cap">{slide.qrCaption}</p>}
+            )}
+          </div>
+          {slide.partnerLogos && slide.partnerLogos.length > 0 && (
+            <div className="es-partner__logos">
+              <span className="es-partner__logos-label">Backed by</span>
+              <div className="es-partner__logos-row">
+                {slide.partnerLogos.map((l, i) => (
+                  <img key={i} src={l.src} alt={l.alt} className="es-partner__logo" />
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -753,16 +753,22 @@
 /* ===== Tonight deck: partner slide (Happy Operators dark/orange cover) ===== */
 .es-partner {
   display: flex;
-  align-items: center;
-  gap: 48px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
   height: 100%;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   background: #0e0e0e;
   border-radius: 20px;
-  padding: 56px 64px;
+  padding: 44px 56px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+}
+.es-partner__main {
+  display: flex;
+  align-items: center;
+  gap: 48px;
 }
 .es-partner__left { flex: 1; min-width: 0; }
 .es-partner__brand {
@@ -784,7 +790,7 @@
 }
 .es-partner__title {
   font-family: 'Space Grotesk', 'DM Sans', sans-serif;
-  font-size: clamp(40px, 5.2vw, 80px);
+  font-size: clamp(34px, 4vw, 60px);
   font-weight: 700;
   line-height: 1.02;
   letter-spacing: -1.5px;
@@ -794,7 +800,7 @@
 .es-partner__accent { color: #E07A5F; }
 .es-partner__sub {
   font-family: 'DM Sans', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.65);
   margin: 28px 0 0;
@@ -834,4 +840,63 @@
   letter-spacing: 1px;
   color: rgba(255, 255, 255, 0.7);
   margin: 0;
+}
+
+/* Partner stats row */
+.es-partner__stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 26px;
+}
+.es-partner__stat { display: flex; flex-direction: column; gap: 4px; max-width: 220px; }
+.es-partner__stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, #F2A98C, #E07A5F 60%, #d4623f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.es-partner__stat-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+.es-partner__stat-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.35;
+}
+
+/* Partner logos strip */
+.es-partner__logos {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 22px;
+}
+.es-partner__logos-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+.es-partner__logos-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.es-partner__logo {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.85;
 }

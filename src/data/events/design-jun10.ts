@@ -156,6 +156,17 @@ export const designJun10: EventConfig = {
         { text: 'Community.' },
       ],
       subtitle: 'Community, Events, Education, Memes',
+      stats: [
+        { value: '460+', label: 'Community members', sub: 'Active builders across Barcelona & beyond' },
+        { value: '413', label: 'Messages per week', sub: 'From 320+ active members' },
+        { value: '24', label: 'Events run', sub: '1200+ total attendees, ~50 per event' },
+      ],
+      partnerLogos: [
+        { src: '/logo-claude.svg', alt: 'Claude' },
+        { src: '/partners/stripe.svg', alt: 'Stripe' },
+        { src: '/partners/netlify.svg', alt: 'Netlify' },
+        { src: '/partners/lovable.png', alt: 'Lovable' },
+      ],
       qr: '/ho-qr.png',
       qrCaption: 'Scan to access',
     },

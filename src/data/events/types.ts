@@ -52,6 +52,10 @@ export type TonightSlide =
       footer?: string;
       qr?: string;
       qrCaption?: string;
+      /** Headline stats row (big number + label + sub). */
+      stats?: { value: string; label: string; sub?: string }[];
+      /** Partner logos shown along the bottom (image src + alt). */
+      partnerLogos?: { src: string; alt: string }[];
     };
 
 /**
