@@ -650,53 +650,54 @@
   align-items: center;        /* ...and centre the people vertically in it */
   justify-content: center;
   flex-wrap: nowrap;          /* keep everyone on ONE row */
-  gap: 24px 40px;
+  gap: 24px 44px;
   margin-top: 0;
 }
 .es-grid--people .es-grid__cell {
   align-items: center;
   text-align: center;
-  gap: 18px;
-  flex: 0 1 210px;
+  gap: 20px;
+  flex: 0 1 248px;
   min-width: 0;
 }
-/* Consistent avatars so 4-across fits on one row without clipping */
+/* Bigger avatars so faces + names read on a big screen. 4 × 224 + 3 × 44 gap
+   = 1028px — fits the slide width with margin to spare, no clipping. */
 .es-grid--people .es-grid__photo-wrap {
-  width: 168px;
-  height: 168px;
+  width: 224px;
+  height: 224px;
   /* Cream ring + soft shadow so faces lift off the orange background */
-  border: 4px solid var(--es-cream, #f3ece4);
+  border: 5px solid var(--es-cream, #f3ece4);
   background: var(--es-cream, #f3ece4);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
 }
 .es-grid--people .es-grid__name {
-  font-size: 23px;
+  font-size: 28px;
   line-height: 1.2;
   text-wrap: balance;
   margin-top: 0;
 }
 .es-grid--people .es-grid__position {
-  font-size: 15px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.62);
 }
 .es-grid--people .es-grid__photo--initials {
-  font-size: 48px;
+  font-size: 64px;
 }
 /* A lone host/speaker reads as a hero — give it room */
 .es-grid--people .es-grid__cell:only-child {
-  flex-basis: 380px;
-  max-width: 460px;
-  gap: 22px;
+  flex-basis: 440px;
+  max-width: 520px;
+  gap: 24px;
 }
 .es-grid--people .es-grid__cell:only-child .es-grid__photo-wrap {
-  width: 260px;
-  height: 260px;
+  width: 320px;
+  height: 320px;
 }
 .es-grid--people .es-grid__cell:only-child .es-grid__name {
-  font-size: 36px;
+  font-size: 44px;
 }
 .es-grid--people .es-grid__cell:only-child .es-grid__position {
-  font-size: 19px;
+  font-size: 22px;
 }
 
 /* Staggered entrance — people scale + fade in one after another */
