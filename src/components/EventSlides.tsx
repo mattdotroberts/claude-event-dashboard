@@ -170,6 +170,33 @@ function renderSlide(slide: TonightSlide, cfg: EventConfig) {
         </div>
       );
 
+    case 'partner':
+      return (
+        <div className="es-partner">
+          <div className="es-partner__left">
+            <div className="es-partner__brand">{slide.brand}</div>
+            {slide.kicker && <p className="es-partner__kicker">{slide.kicker}</p>}
+            <h1 className="es-partner__title">
+              {slide.titleLines.map((l, i) => (
+                <span key={i} className={l.accent ? 'es-partner__accent' : undefined}>
+                  {l.text}{' '}
+                </span>
+              ))}
+            </h1>
+            {slide.subtitle && <p className="es-partner__sub">{slide.subtitle}</p>}
+            {slide.footer && <div className="es-partner__footer">{slide.footer}</div>}
+          </div>
+          {slide.qr && (
+            <div className="es-partner__right">
+              <div className="es-partner__qr">
+                <img src={slide.qr} alt="Scan" />
+              </div>
+              {slide.qrCaption && <p className="es-partner__qr-cap">{slide.qrCaption}</p>}
+            </div>
+          )}
+        </div>
+      );
+
     case 'saveTheDate':
       return (
         <div className="es-std">

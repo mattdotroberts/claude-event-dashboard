@@ -147,6 +147,20 @@ export const designJun10: EventConfig = {
       ],
     },
     {
+      kind: 'partner',
+      brand: '🧱 Happy Operators',
+      kicker: 'Community',
+      titleLines: [
+        { text: "Barcelona's most active" },
+        { text: 'AI founder & operator', accent: true },
+        { text: 'community.' },
+      ],
+      subtitle: 'For venues, sponsors, tool partners and collaborators who want to reach founders and operators actually building with AI.',
+      footer: 'Matt Roberts · Co-founder',
+      qr: '/ho-qr.png',
+      qrCaption: 'Scan to partner',
+    },
+    {
       kind: 'agenda',
       title: 'Tonight',
       items: [

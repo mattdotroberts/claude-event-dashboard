@@ -41,7 +41,18 @@ export type TonightSlide =
   | { kind: 'demosCta'; title: string; subtitle: string }
   | { kind: 'votePrizes'; title: string; subtitle: string }
   | { kind: 'saveTheDate'; date: string; title: string; subtitle: string }
-  | { kind: 'image'; src: string; alt: string };
+  | { kind: 'image'; src: string; alt: string }
+  | {
+      kind: 'partner';
+      brand: string;
+      kicker?: string;
+      /** Title parts; alternates default/accent colour for emphasis. */
+      titleLines: { text: string; accent?: boolean }[];
+      subtitle?: string;
+      footer?: string;
+      qr?: string;
+      qrCaption?: string;
+    };
 
 /**
  * Everything that makes an event an event, in code. Keyed by `slug`, which
