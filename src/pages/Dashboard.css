@@ -867,9 +867,11 @@
 
 .demo-wall {
   flex: 1;
+  min-height: 0;          /* let the wall shrink inside the panel so it scrolls */
   overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-auto-rows: max-content;  /* rows take the card's natural height, not squashed */
   gap: 16px;
   align-content: start;
   padding: 4px;
@@ -900,6 +902,7 @@
 .demo-wall__media {
   position: relative;
   aspect-ratio: 16 / 9;
+  flex-shrink: 0;          /* never let the image get crushed */
   background: var(--bg-surface);
   display: flex;
   align-items: center;
