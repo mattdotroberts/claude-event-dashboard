@@ -322,6 +322,7 @@ type LeaderboardDemo = {
   ogTitle: string | null;
   tagline: string | null;
   builderName: string;
+  projectUrl: string;
   imageUrl: string | null;
   avatarUrl: string | null;
   voteCount: number;
@@ -340,8 +341,15 @@ function DemoWall({ demos }: { demos: LeaderboardDemo[] }) {
     <div className="demo-wall">
       {demos.map((d) => {
         const title = d.projectName || d.ogTitle || 'Untitled';
+        const href = /^https?:\/\//i.test(d.projectUrl) ? d.projectUrl : `https://${d.projectUrl}`;
         return (
-          <div className="demo-wall__card" key={d._id}>
+          <a
+            className="demo-wall__card"
+            key={d._id}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="demo-wall__media">
               {d.imageUrl ? (
                 <img src={d.imageUrl} alt={title} loading="lazy" />
@@ -349,12 +357,13 @@ function DemoWall({ demos }: { demos: LeaderboardDemo[] }) {
                 <span className="demo-wall__media-fallback">🎨</span>
               )}
               <span className="demo-wall__votes">♥ {d.voteCount}</span>
+              <span className="demo-wall__open">↗</span>
             </div>
             <div className="demo-wall__meta">
               <span className="demo-wall__name">{title}</span>
               <span className="demo-wall__builder">{d.builderName}</span>
             </div>
-          </div>
+          </a>
         );
       })}
     </div>

@@ -647,7 +647,7 @@
 .es-grid--people {
   display: flex;
   flex: 1;                    /* fill the space below the title... */
-  align-items: center;        /* ...and centre the people vertically in it */
+  align-items: center;        /* ...and centre the row of people vertically */
   justify-content: center;
   flex-wrap: nowrap;          /* keep everyone on ONE row */
   gap: 24px 44px;
@@ -656,9 +656,24 @@
 .es-grid--people .es-grid__cell {
   align-items: center;
   text-align: center;
+  /* Top-align cell contents so photos sit on the same line regardless of how
+     many lines each name takes. */
+  justify-content: flex-start;
   gap: 20px;
   flex: 0 1 248px;
   min-width: 0;
+}
+/* Photo never shrinks — keeps every avatar the same size + same baseline */
+.es-grid--people .es-grid__photo-wrap {
+  flex-shrink: 0;
+}
+/* Reserve 2 lines for the name so the role always starts at the same Y
+   across all cells, even when one name wraps and another doesn't. */
+.es-grid--people .es-grid__name {
+  min-height: 2.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /* Bigger avatars so faces + names read on a big screen. 4 × 224 + 3 × 44 gap
    = 1028px — fits the slide width with margin to spare, no clipping. */
