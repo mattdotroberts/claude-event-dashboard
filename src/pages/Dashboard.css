@@ -888,6 +888,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* It's an <a> now — strip default link styling so it looks unchanged */
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.demo-wall__card:hover {
+  transform: translateY(-2px);
+  border-color: var(--claude-orange);
 }
 .demo-wall__media {
   position: relative;
