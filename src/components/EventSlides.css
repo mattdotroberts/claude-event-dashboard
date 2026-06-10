@@ -695,6 +695,13 @@
 .es-grid--people .es-grid__position {
   font-size: 18px;
   color: rgba(0, 0, 0, 0.62);
+  line-height: 1.3;
+  /* Reserve 2 lines so 1-line and 2-line roles occupy the same vertical space,
+     keeping every cell's name + role block identical height (no drift). */
+  min-height: 2.6em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .es-grid--people .es-grid__photo--initials {
   font-size: 64px;
