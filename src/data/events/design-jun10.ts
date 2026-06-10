@@ -232,6 +232,18 @@ export const designJun10: EventConfig = {
       title: 'Vote for your favourites',
       subtitle: 'You get 3 votes. Top demo wins a prize. 🏆',
     },
+    {
+      kind: 'partner',
+      brand: '🎵 Primavera',
+      kicker: 'Tonight’s playlist',
+      titleLines: [
+        { text: 'Vote for the' },
+        { text: 'Primavera', accent: true },
+        { text: 'playlist.' },
+      ],
+      subtitle: 'Claude does the music. Scan to vote for what plays next.',
+      qr: '/primavera-qr.png',
+    },
   ],
   speakers: DESIGN_SPEAKERS,
   runOfShow: {
