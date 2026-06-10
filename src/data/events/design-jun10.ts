@@ -2,62 +2,82 @@ import type { EventConfig } from "./types";
 import type { Speaker } from "../speakers";
 
 /**
- * Panel + host for the design event. Sourced from the shared event doc.
+ * Speakers for the design event (talk + panel), with 3-bullet host notes.
  * These render on the host-notes /speakers page.
  */
 const DESIGN_SPEAKERS: Speaker[] = [
+  // ===== Talk: Your AI looks like everyone else's =====
   {
-    name: "Marc Ustrell",
-    position: "Staff Content Designer at Qonto",
-    photo: "/speakers/placeholder.svg",
+    name: "Laura Rosa Diaz Cañas",
+    position: "Brand Strategist @ EDUCA EDTECH Group",
+    photo: "/speakers/laurarosa.png",
+    talkTitle: "Talk — Your AI looks like everyone else's",
+    time: "18:40 (talk)",
+    notes: [
+      "Brand Strategist at EDUCA EDTECH Group.",
+      "Co-presents the talk 'Your AI looks like everyone else's' with Iván González.",
+      "Brings the brand + taste lens: how to keep a distinct identity when everyone uses the same AI tools.",
+    ],
+  },
+  {
+    name: "Iván González",
+    position: "Principal Engineer @ Siemens Energy",
+    photo: "/speakers/ivan.png",
+    talkTitle: "Talk — Your AI looks like everyone else's",
+    time: "18:40 (talk)",
+    notes: [
+      "Principal Engineer at Siemens Energy (Barcelona).",
+      "Co-presents 'Your AI looks like everyone else's' with Laura Rosa Diaz Cañas.",
+      "Brings the engineering lens: building with AI without producing generic, samey output.",
+    ],
+  },
+  // ===== Panel: Taste, Art & Tools =====
+  {
+    name: "Linus Ekenstam",
+    position: "Co-founder @ FloCurve · Panel Host",
+    photo: "/speakers/linus.jpeg",
+    talkTitle: "Panel Host — Taste, Art & Tools",
+    time: "19:05 (panel host)",
+    notes: [
+      "Co-founder of FloCurve (AI agent that finds high-intent leads on LinkedIn); panel host tonight.",
+      "Product designer turned serial founder, 18 years building for Typeform, Flodesk and Thingtesting.",
+      "AI evangelist and stage host — collaborated with Meta and Google, spoken at MWC and Imagine AI Live.",
+    ],
+  },
+  {
+    name: "Marc Ustrell Hernandez",
+    position: "Staff Content Designer @ Qonto",
+    photo: "/speakers/marc.jpeg",
     talkTitle: "Panel — Taste, Art & Tools",
-    time: "18:25 (panel)",
-    bio: "Marc is a Staff Content Designer at Qonto, Europe's leading finance solution for SMEs and freelancers. Background in UX writing, localization, and content systems. He builds Claude-powered tools in production, from localization automation to internal web apps.",
-    funFact: "Believes designers who thrive with AI are the ones who understand their own systems first.",
-    questions: [
-      {
-        group: "Panel angle",
-        items: [
-          "How do you build Claude into a production design/content workflow without losing craft?",
-          "What does 'understand your own systems first' look like in practice for a designer?",
-        ],
-      },
+    time: "19:05 (panel)",
+    notes: [
+      "Staff Content Designer at Qonto (Europe's leading finance solution for SMEs & freelancers).",
+      "Background in UX writing, localization and content systems.",
+      "Builds Claude-powered tools in production, from localization automation to internal web apps.",
     ],
   },
   {
     name: "Alicia Comella",
-    position: "Design Lead at Perk (AI-native travel)",
-    photo: "/speakers/placeholder.svg",
+    position: "Product design leader @ Perk",
+    photo: "/speakers/alicia.jpeg",
     talkTitle: "Panel — Taste, Art & Tools",
-    time: "18:25 (panel)",
-    bio: "Alicia leads the travel design organisation at Perk, guiding a transformation toward an AI-native travel experience. Previously ran a London design studio delivering digital products for Arup, Intel, and Oxford University, then led design at Wallbox and The Knot Worldwide. Originally from Barcelona, with experience across the UK, Germany, and Spain.",
-    funFact: "Helps business travellers focus on the trip, not the logistics.",
-    questions: [
-      {
-        group: "Panel angle",
-        items: [
-          "How does AI change both the product and the design practice at the same time?",
-          "What did moving from a studio to leading AI-native design teach you?",
-        ],
-      },
+    time: "19:05 (panel)",
+    notes: [
+      "Leads product design at Perk, guiding its shift to an AI-native travel experience.",
+      "Previously ran a London design studio (Arup, Intel, Oxford University), then led design at Wallbox and The Knot Worldwide.",
+      "Barcelona native with experience across the UK, Germany and Spain.",
     ],
   },
   {
-    name: "Linus Ekenstam",
-    position: "Founder, FloCurve · Panel Host",
-    photo: "/speakers/placeholder.svg",
-    talkTitle: "Panel Host",
-    time: "18:25 (panel host)",
-    bio: "Product designer turned serial founder with 18 years building digital products for Typeform, Flodesk, and Thingtesting. Currently building FloCurve, an AI agent that finds high-intent leads on LinkedIn. AI evangelist and stage host; has collaborated with Meta and Google and spoken at Mobile World Congress, Imagine AI Live, and Upscale Conf. Serial founder of BedtimeStory.ai, Sensive, and Copygram.",
-    funFact: "42% reply rates, 60 seconds from URL to live campaign, 10,000+ leads found with FloCurve.",
-    questions: [
-      {
-        group: "Host prompts",
-        items: [
-          "Where does Claude augment humans while preserving what makes us uniquely human?",
-          "What separates designers who thrive with AI from those who stall?",
-        ],
-      },
+    name: "Tim Rodenbröker",
+    position: "Creative Coder",
+    photo: "/speakers/tim.png",
+    talkTitle: "Panel — Taste, Art & Tools",
+    time: "19:05 (panel)",
+    notes: [
+      "Creative Coder.",
+      "On the panel for taste, art and tools in creative work.",
+      "(Add company / background if available.)",
     ],
   },
 ];

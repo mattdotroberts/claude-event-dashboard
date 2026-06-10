@@ -9,6 +9,8 @@ export interface Speaker {
   bio?: string;
   /** Single fun-fact line — read on stage as an ice-breaker. */
   funFact?: string;
+  /** Up to 3 quick speaker-note bullets (host reads these out). */
+  notes?: string[];
   /** Grouped starter questions. */
   questions?: { group: string; items: string[] }[];
 }

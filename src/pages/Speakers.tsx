@@ -1,20 +1,23 @@
 import { SPEAKERS, speakerSlug, type Speaker } from '../data/speakers';
+import { useEvent } from '../data/events/useEvent';
 import './Speakers.css';
 
 export function Speakers() {
+  const { config } = useEvent();
+  const SPEAKERS_LIST = config.speakers ?? SPEAKERS;
   return (
     <div className="speakers-page">
       <div className="speakers-page__inner">
         <header className="speakers-page__header">
           <p className="speakers-page__kicker">Host notes</p>
           <h1 className="speakers-page__title">Speakers</h1>
-          <p className="speakers-page__sub">Claude Code for Builders · Barcelona #3 · 14 May 2026</p>
+          <p className="speakers-page__sub">{config.title} · {config.edition} · {config.date}</p>
         </header>
 
         {/* Index */}
         <nav className="speakers-toc" aria-label="Speaker index">
           <ol className="speakers-toc__list">
-            {SPEAKERS.map((s, i) => (
+            {SPEAKERS_LIST.map((s, i) => (
               <li key={s.name} className="speakers-toc__item">
                 <a href={`#${speakerSlug(s)}`} className="speakers-toc__link">
                   <span className="speakers-toc__num">{i + 1}.</span>
@@ -27,7 +30,7 @@ export function Speakers() {
         </nav>
 
         {/* Speaker sections */}
-        {SPEAKERS.map((s, i) => (
+        {SPEAKERS_LIST.map((s, i) => (
           <SpeakerSection key={s.name} speaker={s} index={i + 1} />
         ))}
 
@@ -60,6 +63,17 @@ function SpeakerSection({ speaker, index }: { speaker: Speaker; index: number })
           </p>
         </div>
       </div>
+
+      {speaker.notes && speaker.notes.length > 0 && (
+        <div className="speaker-section__block">
+          <h3 className="speaker-section__block-title">Speaker notes</h3>
+          <ul className="speaker-section__notes">
+            {speaker.notes.map((n, i) => (
+              <li key={i}>{n}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {speaker.bio && (
         <div className="speaker-section__block">
