@@ -112,7 +112,7 @@ export const designJun10: EventConfig = {
       tag: 'Hosts',
       title: 'Your hosts tonight',
       people: [
-        { name: 'Vaishali Rajurkar', role: 'Lead Designer', photo: '/speakers/vaishali.jpeg' },
+        { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
         { name: 'Matt Roberts', role: 'Founder @ Happy Operators', photo: '/speakers/matt.jpg' },
         { name: 'Jérémie Benhamou', role: 'Founder @ The Tech Nation', photo: '/speakers/jeremie.jpeg' },
       ],
@@ -122,7 +122,7 @@ export const designJun10: EventConfig = {
       tag: 'Host',
       title: 'Your host tonight',
       people: [
-        { name: 'Vaishali Rajurkar', role: 'Lead Designer', photo: '/speakers/vaishali.jpeg' },
+        { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
       ],
     },
     {
