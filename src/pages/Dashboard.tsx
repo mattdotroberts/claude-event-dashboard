@@ -100,9 +100,9 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
   const [showEventSlides, setShowEventSlides] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
 
-  // Page carousel — demo leaderboard adds a 4th page when demos are enabled.
+  // Page carousel — page 1 = QR + demos wall, page 2 = leaderboard (if demos on).
   type Page = number;
-  const PAGE_COUNT = config.demosEnabled ? 4 : 3;
+  const PAGE_COUNT = config.demosEnabled ? 2 : 1;
   const [page, setPage] = useState<Page>(0);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -173,84 +173,34 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
       >
         <div className="dashboard__track" style={{ transform: `translateX(-${page * 100}%)` }}>
 
-          {/* ================= PAGE 1: Room state ================= */}
-          <section className="dashboard__page dashboard__grid dashboard__grid--p1">
+          {/* ================= PAGE 1: Join QR + demos directory ================= */}
+          <section className="dashboard__page dashboard__grid dashboard__grid--join">
 
-            {/* Hero QR (left half) */}
+            {/* Hero QR (left) */}
             <div className="panel panel--claude panel--qr-hero">
               <SpeechBubble count={count} />
               <ClaudeCharacter size="large" />
-              <p className="panel__cta">Scan to join. <strong>Be part of the wall.</strong></p>
+              <p className="panel__cta">Scan to join. <strong>Show &amp; tell.</strong></p>
               <div className="qr-wrap qr-wrap--hero">
-                <QRCodeSVG value={MOBILE_URL} size={320} bgColor="transparent" fgColor="#e8e0d8" level="M" />
+                <QRCodeSVG value={MOBILE_URL} size={300} bgColor="transparent" fgColor="#e8e0d8" level="M" />
               </div>
-            </div>
-
-            {/* People Here (top right) */}
-            <div className="panel panel--count" onClick={() => setExpanded('count')}>
-              <div className="panel__header">
-                <span className="panel__label">PEOPLE HERE</span>
-                <span className="live-badge"><span className="live-dot" /> Live</span>
-              </div>
-              <div className="count-display count-display--big">
-                <span className="count-display__number">{count}</span>
-                <span className="count-display__target">/ {TARGET_ATTENDEES}</span>
-              </div>
-              <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${Math.min(pct, 100)}%` }} />
-              </div>
-              <div className="count-label">
-                {pct < 30 ? 'Warming up...' : pct < 70 ? 'Filling up nicely' : pct < 95 ? 'Almost there' : 'Full house!'}
-              </div>
-              <button className="btn-free-credits" onClick={(e) => { e.stopPropagation(); setShowCredits(true); }}>
+              <button className="btn-free-credits" onClick={() => setShowCredits(true)}>
                 🎁 Free API Credits
               </button>
             </div>
 
-            {/* The Room Is (bottom right top) */}
-            <div className="panel panel--donut">
+            {/* Demos directory (right) */}
+            <div className="panel panel--demos-wall">
               <div className="panel__header">
-                <span className="panel__label">THE ROOM IS...</span>
+                <span className="panel__label">COMMUNITY DEMOS</span>
+                <span className="panel__badge">{demos.length} project{demos.length !== 1 ? 's' : ''}</span>
               </div>
-              <DonutChart data={experienceCounts} total={count} />
+              <DemoWall demos={demos} />
             </div>
 
           </section>
 
-          {/* ================= PAGE 2: What the room wants to talk about ================= */}
-          <section className="dashboard__page dashboard__grid dashboard__grid--p2">
-
-            {/* Word cloud (left, wide) */}
-            <div className="panel panel--cloud">
-              <div className="panel__header">
-                <span className="panel__label">THE ROOM WANTS TO TALK ABOUT…</span>
-                <span className="panel__badge">{interestBuckets.reduce((s, b) => s + b.count, 0)} answers</span>
-              </div>
-              <WordCloud buckets={interestBuckets} />
-            </div>
-
-            {/* Live stream (right) */}
-            <div className="panel panel--stream">
-              <div className="panel__header">
-                <span className="panel__label">LIVE</span>
-                <span className="live-badge"><span className="live-dot" /> Live</span>
-              </div>
-              <InterestStream items={interestItems} />
-            </div>
-          </section>
-
-          {/* ================= PAGE 3: The Room (avatar world) ================= */}
-          <section className="dashboard__page dashboard__grid dashboard__grid--p3">
-            <div className="panel panel--room">
-              <div className="panel__header">
-                <span className="panel__label">THE ROOM</span>
-                <span className="panel__badge">{roomPeople.length} in the room</span>
-              </div>
-              <RoomCanvas people={roomPeople} />
-            </div>
-          </section>
-
-          {/* ================= PAGE 4: Demo leaderboard ================= */}
+          {/* ================= PAGE 2: Demo leaderboard ================= */}
           {config.demosEnabled && (
             <section className="dashboard__page dashboard__grid dashboard__grid--leaderboard">
               <div className="panel panel--leaderboard">
@@ -376,6 +326,40 @@ type LeaderboardDemo = {
   avatarUrl: string | null;
   voteCount: number;
 };
+
+function DemoWall({ demos }: { demos: LeaderboardDemo[] }) {
+  if (demos.length === 0) {
+    return (
+      <div className="demo-wall__empty">
+        <span className="demo-wall__empty-emoji">🎨</span>
+        <p>No demos yet.<br />Scan to submit yours.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="demo-wall">
+      {demos.map((d) => {
+        const title = d.projectName || d.ogTitle || 'Untitled';
+        return (
+          <div className="demo-wall__card" key={d._id}>
+            <div className="demo-wall__media">
+              {d.imageUrl ? (
+                <img src={d.imageUrl} alt={title} loading="lazy" />
+              ) : (
+                <span className="demo-wall__media-fallback">🎨</span>
+              )}
+              <span className="demo-wall__votes">♥ {d.voteCount}</span>
+            </div>
+            <div className="demo-wall__meta">
+              <span className="demo-wall__name">{title}</span>
+              <span className="demo-wall__builder">{d.builderName}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 function DemoLeaderboard({ demos }: { demos: LeaderboardDemo[] }) {
   if (demos.length === 0) {
