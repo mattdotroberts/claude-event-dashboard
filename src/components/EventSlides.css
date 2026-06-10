@@ -941,3 +941,10 @@
   box-shadow: none;
 }
 .es-side-nav, .es-close, .es-progress { z-index: 3; }
+
+/* People-slide title (panel/talk) — italic so the title reads distinct from
+   the upright bold speaker names below it. */
+.es-grid-wrap .es-slide__title {
+  font-style: italic;
+  font-weight: 500;
+}

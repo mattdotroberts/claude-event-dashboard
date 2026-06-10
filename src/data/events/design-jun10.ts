@@ -176,7 +176,7 @@ export const designJun10: EventConfig = {
       items: [
         { time: '6.00pm', label: 'Doors open' },
         { time: '6.25pm', label: 'Welcome' },
-        { time: '6.40pm', label: 'Talk: How to not make AI Slop · Laura Rosa Diaz Cañas & Iván González' },
+        { time: '6.40pm', label: 'Talk: Your AI looks like everyone else’s · Laura Rosa Diaz Cañas & Iván González' },
         { time: '7.05pm', label: 'Panel: Taste, Art & Tools · Linus, Marc, Alicia, Tim' },
         { time: '7.40pm', label: 'Community demos' },
         { time: '8.00pm', label: 'Cheese, wine & music' },
@@ -196,7 +196,7 @@ export const designJun10: EventConfig = {
     {
       kind: 'people',
       tag: 'Talk',
-      title: 'How to not make AI Slop',
+      title: 'Your AI looks like everyone else’s',
       people: [
         { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
         { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
@@ -220,7 +220,7 @@ export const designJun10: EventConfig = {
     schedule: [
       { time: "18:00", activity: "Doors open" },
       { time: "18:25", activity: "Welcome" },
-      { time: "18:40", activity: "Talk: How to not make AI Slop — Laura Rosa Diaz Cañas & Iván González", highlight: true },
+      { time: "18:40", activity: "Talk: Your AI looks like everyone else’s — Laura Rosa Diaz Cañas & Iván González", highlight: true },
       { time: "19:05", activity: "Panel: Taste, Art & Tools — Linus, Marc, Alicia, Tim", highlight: true },
       { time: "19:40", activity: "Community demos — 3-min show & tell + voting", highlight: true },
       { time: "20:00", activity: "Cheese, wine & music", hard: true },
