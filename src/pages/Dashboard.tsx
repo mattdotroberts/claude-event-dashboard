@@ -98,7 +98,6 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
   const [showSplash, setShowSplash] = useState(true);
   const [showWhatsUp, setShowWhatsUp] = useState(false);
   const [showEventSlides, setShowEventSlides] = useState(false);
-  const [showCredits, setShowCredits] = useState(false);
 
   // Page carousel — page 1 = QR + demos wall, page 2 = leaderboard (if demos on).
   type Page = number;
@@ -107,13 +106,13 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       // Don't grab keys while a modal is open
-      if (showSplash || showWhatsUp || showEventSlides || showCredits || expanded) return;
+      if (showSplash || showWhatsUp || showEventSlides || expanded) return;
       if (e.key === 'ArrowRight') { e.preventDefault(); setPage((p) => ((p + 1) % PAGE_COUNT) as Page); }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); setPage((p) => ((p - 1 + PAGE_COUNT) % PAGE_COUNT) as Page); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [showSplash, showWhatsUp, showEventSlides, showCredits, expanded]);
+  }, [showSplash, showWhatsUp, showEventSlides, expanded]);
 
   // Touch swipe
   const touchStartX = useRef<number | null>(null);
@@ -145,27 +144,6 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
       {showSplash && <SplashOverlay config={config} onClose={() => setShowSplash(false)} />}
       {showWhatsUp && <WhatsUpClaude onClose={() => setShowWhatsUp(false)} />}
       {showEventSlides && <EventSlides config={config} onClose={() => setShowEventSlides(false)} />}
-      {showCredits && (
-        <div className="credits-overlay" onClick={() => setShowCredits(false)}>
-          <div className="credits-card" onClick={(e) => e.stopPropagation()}>
-            <div className="credits-card__left">
-              <div className="credits-card__party">🎉</div>
-              <h2 className="credits-card__title">
-                {config.title}<br />in {config.edition}
-              </h2>
-              <p className="credits-card__sub">
-                Sign up to get free API credits to build with Claude.
-              </p>
-            </div>
-            <div className="credits-card__right">
-              <img src="/credits-qr.png" alt="Scan to redeem" className="credits-card__qr" />
-            </div>
-            <div className="credits-card__logo">
-              <img src="/logo-claude.svg" alt="Claude" />
-            </div>
-          </div>
-        </div>
-      )}
       <div
         className="dashboard__pager"
         onTouchStart={onTouchStart}
@@ -184,9 +162,6 @@ export function Dashboard({ archiveSlug }: { archiveSlug?: string } = {}) {
               <div className="qr-wrap qr-wrap--hero">
                 <QRCodeSVG value={MOBILE_URL} size={300} bgColor="transparent" fgColor="#e8e0d8" level="M" />
               </div>
-              <button className="btn-free-credits" onClick={() => setShowCredits(true)}>
-                🎁 Free API Credits
-              </button>
             </div>
 
             {/* Demos directory (right) */}
