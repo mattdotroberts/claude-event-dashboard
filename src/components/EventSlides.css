@@ -715,3 +715,22 @@
 @media (prefers-reduced-motion: reduce) {
   .es-grid--people .es-grid__cell { animation: none; }
 }
+
+/* ===== Tonight deck: full-bleed image slide (partner/promo slides) ===== */
+.es-image-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+}
+.es-image-slide__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;       /* never crop — keep QR codes scannable */
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}

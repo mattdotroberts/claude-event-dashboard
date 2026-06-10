@@ -163,6 +163,13 @@ function renderSlide(slide: TonightSlide, cfg: EventConfig) {
         </div>
       );
 
+    case 'image':
+      return (
+        <div className="es-image-slide">
+          <img src={slide.src} alt={slide.alt} className="es-image-slide__img" />
+        </div>
+      );
+
     case 'saveTheDate':
       return (
         <div className="es-std">

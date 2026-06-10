@@ -127,6 +127,11 @@ export const designJun10: EventConfig = {
       ],
     },
     {
+      kind: 'image',
+      src: '/slide-tech-nation.png',
+      alt: 'The Tech Nation — We do AI transformation. Cheese Tech & Wine #4, Crewly Cohort #3.',
+    },
+    {
       kind: 'people',
       tag: 'Host',
       title: 'Your host tonight',

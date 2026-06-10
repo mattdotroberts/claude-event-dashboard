@@ -40,7 +40,8 @@ export type TonightSlide =
   | { kind: 'people'; tag: string; title: string; people: SlidePerson[] }
   | { kind: 'demosCta'; title: string; subtitle: string }
   | { kind: 'votePrizes'; title: string; subtitle: string }
-  | { kind: 'saveTheDate'; date: string; title: string; subtitle: string };
+  | { kind: 'saveTheDate'; date: string; title: string; subtitle: string }
+  | { kind: 'image'; src: string; alt: string };
 
 /**
  * Everything that makes an event an event, in code. Keyed by `slug`, which
