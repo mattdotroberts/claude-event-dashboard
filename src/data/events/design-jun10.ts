@@ -128,20 +128,44 @@ export const designJun10: EventConfig = {
   tonightSlides: [
     { kind: 'title' },
     {
-      kind: 'people',
-      tag: 'Hosts',
-      title: 'Your hosts tonight',
-      people: [
-        { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
-        { name: 'Matt Roberts', role: 'Founder @ Happy Operators', photo: '/speakers/matt.jpg' },
-        { name: 'Jérémie Benhamou', role: 'Founder @ The Tech Nation', photo: '/speakers/jeremie.jpeg' },
+      kind: 'agenda',
+      title: 'Tonight',
+      items: [
+        { time: '6.00pm', label: 'Doors open' },
+        { time: '6.25pm', label: 'Welcome' },
+        { time: '6.40pm', label: 'Talk: Your AI looks like everyone else’s', sub: 'Laura Rosa Diaz Cañas & Iván González' },
+        { time: '7.05pm', label: 'Panel: Taste, Art & Tools', sub: 'Linus, Marc, Alicia, Tim' },
+        { time: '7.40pm', label: 'Community demos' },
+        { time: '8.00pm', label: 'Cheese, wine & music' },
       ],
     },
     {
       kind: 'people',
-      tag: 'Host',
-      title: 'Your host tonight',
+      tag: 'Talk',
+      title: 'Your AI looks like everyone else’s',
       people: [
+        { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
+        { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Panel',
+      title: 'Taste, Art & Tools',
+      people: [
+        { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
+        { name: 'Marc Ustrell', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
+        { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
+        { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
+      ],
+    },
+    {
+      kind: 'people',
+      tag: 'Hosts',
+      title: 'Your hosts tonight',
+      people: [
+        { name: 'Jérémie Benhamou', role: 'Founder @ The Tech Nation', photo: '/speakers/jeremie.jpeg' },
+        { name: 'Matt Roberts', role: 'Founder @ Happy Operators', photo: '/speakers/matt.jpg' },
         { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
       ],
     },
@@ -191,35 +215,11 @@ export const designJun10: EventConfig = {
       qrCaption: 'Scan to access',
     },
     {
-      kind: 'agenda',
-      title: 'Tonight',
-      items: [
-        { time: '6.00pm', label: 'Doors open' },
-        { time: '6.25pm', label: 'Welcome' },
-        { time: '6.40pm', label: 'Talk: Your AI looks like everyone else’s', sub: 'Laura Rosa Diaz Cañas & Iván González' },
-        { time: '7.05pm', label: 'Panel: Taste, Art & Tools', sub: 'Linus, Marc, Alicia, Tim' },
-        { time: '7.40pm', label: 'Community demos' },
-        { time: '8.00pm', label: 'Cheese, wine & music' },
-      ],
-    },
-    {
       kind: 'people',
-      tag: 'Panel',
-      title: 'Taste, Art & Tools',
+      tag: 'Host',
+      title: 'Your host tonight',
       people: [
-        { name: 'Linus Ekenstam', role: 'Co-founder @ Flocurve · Panel host', photo: '/speakers/linus.jpeg' },
-        { name: 'Marc Ustrell', role: 'Staff Content Designer, Qonto', photo: '/speakers/marc.jpeg' },
-        { name: 'Alicia Comella', role: 'Product design leader @ Perk', photo: '/speakers/alicia.jpeg' },
-        { name: 'Tim Rodenbröker', role: 'Creative Coder', photo: '/speakers/tim.png' },
-      ],
-    },
-    {
-      kind: 'people',
-      tag: 'Talk',
-      title: 'Your AI looks like everyone else’s',
-      people: [
-        { name: 'Laura Rosa Diaz Cañas', role: 'Brand Strategist', photo: '/speakers/laurarosa.png' },
-        { name: 'Iván González', role: 'Principal Engineer', photo: '/speakers/ivan.png' },
+        { name: 'Vaishali Rajurkar', role: 'Lead Designer @ Adidas', photo: '/speakers/vaishali.jpeg' },
       ],
     },
     {
