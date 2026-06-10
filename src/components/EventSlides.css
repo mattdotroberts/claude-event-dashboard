@@ -900,3 +900,23 @@
   object-fit: contain;
   opacity: 0.85;
 }
+
+/* ===== Full-bleed partner slide — cover the whole overlay, edge to edge =====
+   The card escapes the container/slide padding via position:fixed so it reaches
+   every screen edge. Nav arrows + progress sit above it so the deck still works. */
+.es-slide--partner { padding: 0; overflow: visible; }
+.es-slide--partner .es-partner {
+  position: fixed;
+  inset: 0;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 72px clamp(64px, 9vw, 140px);
+  justify-content: center;
+  z-index: 1;
+}
+.es-side-nav, .es-close, .es-progress { z-index: 3; }
+.es-slide--partner ~ * .es-side-nav { color: rgba(255,255,255,0.6); }
