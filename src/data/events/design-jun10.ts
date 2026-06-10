@@ -140,8 +140,8 @@ export const designJun10: EventConfig = {
       items: [
         { time: '6.00pm', label: 'Doors open' },
         { time: '6.25pm', label: 'Welcome' },
-        { time: '6.40pm', label: 'Talk: How to not make AI Slop · Laura' },
-        { time: '7.05pm', label: 'Panel: where Claude fits in creative work' },
+        { time: '6.40pm', label: 'Talk: How to not make AI Slop · Laura Rosa Diaz Cañas & Iván González' },
+        { time: '7.05pm', label: 'Panel: where Claude fits in creative work · Linus, Marc, Alicia, Tim' },
         { time: '7.40pm', label: 'Community demos' },
         { time: '8.00pm', label: 'Cheese, wine & music' },
       ],
