@@ -125,7 +125,10 @@ function renderSlide(slide: TonightSlide, cfg: EventConfig) {
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
                 {item.time && <span className="es-agenda__time">{item.time}</span>}
-                <span className="es-agenda__label">{item.label}</span>
+                <span className="es-agenda__labelwrap">
+                  <span className="es-agenda__label">{item.label}</span>
+                  {item.sub && <span className="es-agenda__sub">{item.sub}</span>}
+                </span>
               </li>
             ))}
           </ul>

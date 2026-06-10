@@ -176,8 +176,8 @@ export const designJun10: EventConfig = {
       items: [
         { time: '6.00pm', label: 'Doors open' },
         { time: '6.25pm', label: 'Welcome' },
-        { time: '6.40pm', label: 'Talk: Your AI looks like everyone else’s · Laura Rosa Diaz Cañas & Iván González' },
-        { time: '7.05pm', label: 'Panel: Taste, Art & Tools · Linus, Marc, Alicia, Tim' },
+        { time: '6.40pm', label: 'Talk: Your AI looks like everyone else’s', sub: 'Laura Rosa Diaz Cañas & Iván González' },
+        { time: '7.05pm', label: 'Panel: Taste, Art & Tools', sub: 'Linus, Marc, Alicia, Tim' },
         { time: '7.40pm', label: 'Community demos' },
         { time: '8.00pm', label: 'Cheese, wine & music' },
       ],

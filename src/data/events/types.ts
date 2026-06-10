@@ -36,7 +36,7 @@ export interface SlidePerson {
  */
 export type TonightSlide =
   | { kind: 'title' }
-  | { kind: 'agenda'; title?: string; items: { time?: string; label: string }[] }
+  | { kind: 'agenda'; title?: string; items: { time?: string; label: string; sub?: string }[] }
   | { kind: 'people'; tag: string; title: string; people: SlidePerson[] }
   | { kind: 'demosCta'; title: string; subtitle: string }
   | { kind: 'votePrizes'; title: string; subtitle: string }

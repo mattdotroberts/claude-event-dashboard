@@ -220,6 +220,7 @@
   align-items: flex-start;
   text-align: left;
   justify-content: center;
+  height: 100%;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
@@ -227,14 +228,14 @@
 }
 
 .es-agenda-wrap .es-slide__title {
-  font-size: 88px;
-  margin-bottom: 16px;
+  font-size: 64px;
+  margin-bottom: 4px;
 }
 
 .es-agenda {
   list-style: none;
   padding: 0;
-  margin: 16px 0 0;
+  margin: 8px 0 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -243,9 +244,9 @@
 
 .es-agenda__row {
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 48px;
-  align-items: baseline;
+  grid-template-columns: 180px 1fr;
+  gap: 40px;
+  align-items: start;
   padding: 20px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   animation: esLineIn 0.4s ease both;
@@ -948,3 +949,22 @@
   font-style: italic;
   font-weight: 500;
 }
+
+/* Agenda label + optional speaker sub-line (keeps rows compact + readable) */
+.es-agenda__labelwrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.es-agenda__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.55);
+  line-height: 1.25;
+}
+/* Slightly smaller label + tighter rows so the whole agenda fits one screen */
+.es-agenda__label { font-size: 40px; }
+.es-agenda__row { padding: 16px 0; }
+.es-agenda__time { font-size: 26px; align-self: start; padding-top: 6px; }
